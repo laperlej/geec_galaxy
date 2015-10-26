@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='uft-8'?>
+<toolbox>
+  <label id="labpe" Name="PELabs Toolbox"/>
+  <section id="labpe" name="GEeC tools">
+    <tool file="labpe/geec_data_source.xml"/>
+    <tool file="labpe/geec.xml"/>
+  </section>
+</toolbox>
