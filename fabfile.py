@@ -13,3 +13,4 @@ def restart():
 def deploy_vm():
     with cd('/home/galaxy/geec_galaxy'):
         run('git pull')
+
