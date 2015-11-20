@@ -23,7 +23,9 @@
     --assembly
     $assembly
   </command>
-  
+  <requirements>
+    <requirement type="python-module">numpy</requirement>
+  </requirements>
   <inputs>
     <param format="BigWig" name="userData" type="data" label="User's dataset(s)" optional="true" multiple="true" help="Formats currently supported: BigWig, BedGraph, Wig"/>
     <param format="Tabular" name="ihecdata" type="data" label="Selected public datasets list file(s)" optional="true" multiple="false" help='List(s) containing public dataset IDs created through the "GeEC Public Datasets" selection tool'/>

@@ -4,6 +4,11 @@ env.use_ssh_config = True
 env.hosts = {'galaxy': ['galaxy']}
 
 @hosts('galaxy')
+def start():
+    with cd('/home/galaxy/galaxy-dist'):
+        run('GALAXY_RUN_ALL=1 sh run.sh --daemon')
+
+@hosts('galaxy')
 def restart():
     with cd('/home/galaxy/galaxy-dist'):
         run('GALAXY_RUN_ALL=1 sh run.sh --stop-daemon')
