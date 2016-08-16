@@ -42,6 +42,7 @@
 
     <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
       <option value="blacklisted">Blacklisted</option>
+      <option value="none">None</option>
     </param>
 
     <param name="metric" type="select" label="Correlation metric">

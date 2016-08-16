@@ -8,77 +8,65 @@ import os
 sys.path.insert(0, '/Users/Jon/Projects/geec_tools/python')
 import config
 
-def to_hdf5(input_list, assembly, user_hdf5, resolution):
-    """Usage: to_hdf5 {input_list.txt}
+def to_hdf5(raw_file, name, assembly, user_hdf5, resolution):
+    """Usage: to_hdf5 {dataset.bw}
+                      {name}
                       {chrom_sizes}
                       {output.hdf5}
                       {bin_size}\n"""
     subprocess.call([config.TO_HDF5,
-                     input_list,
+                     raw_file,
+                     name,
                      config.CHROM_SIZE[assembly],
                      user_hdf5,
                      resolution])
 
-def to_zscore(input_list, assembly, user_hdf5, user_zscore, resolution, include, exclude):
-    """Usage: to_zscore {input_list.txt}
-                        {chrom_sizes}
-                        {input.hdf5}
+def filter_hdf5(name, assembly, user_hdf5, user_zscore, resolution, include, exclude):
+    """Usage: filter    {input.hdf5}
+                        {name}
                         {output.hdf5}
+                        {chrom_sizes}
                         {bin_size}
                         {include.bed}
                         {exclude.bed}\n");"""
-    subprocess.call([config.TO_ZSCORE,
-                     input_list,
-                     config.CHROM_SIZE[assembly],
+    subprocess.call([config.FILTER,
                      user_hdf5,
-                     user_zscore,
+                     name,
+                     filtered_hdf5,
+                     config.CHROM_SIZE[assembly],
                      resolution,
                      include,
                      exclude
                     ])
 
-def correlate(user_input_list, public_input_list, assembly, user_zscore, public_zscore, correlation_file, resolution):
-    """Usage: correlation {input_list1}
-                          {input_list2}
+def correlate(input_list, assembly, correlation_file, resolution):
+    """Usage: correlation {input_list}
                           {chrom_sizes}
-                          {input1.hdf5}
-                          {input2.hdf5}
                           {output.results}
                           {bin_size}\n");"""
     subprocess.call([config.CORRELATION,
-                     user_input_list,
-                     public_input_list,
+                     input_list,
                      config.CHROM_SIZE[assembly],
-                     user_zscore,
-                     public_zscore,
                      correlation_file,
                      resolution
                      ])
 
-def complete_matrix(user_input_list, public_input_list, assembly, correlation_file, public_matrix, output_matrix):
+def make_matrix(input_list, assembly, correlation_file, output_matrix):
     """
-    complete_matrix.py 
-    chrom_sizes = sys.argv[1]
-    list1 = sys.argv[2]
-    list2 = sys.argv[3]
-    correlation_file = sys.argv[4]
-    matrix_file = sys.argv[5]
-    output_matrix_path = sys.argv[6]
+    python make_matrix.py {list_path} {chrom_size} {corr_path} {output_path}
     """
     subprocess.call(['python', 
-                     config.COMPLETE_MATRIX,
+                     config.MAKE_MATRIX,
+                     input_list,
                      config.CHROM_SIZE[assembly],
-                     user_input_list,
-                     public_input_list,
                      correlation_file,
-                     public_matrix,
                      output_matrix
                      ])
 
-def create_input_list(paths, labels):
+def create_input_list(input_list):
     file_path = tmp_name()
     with open(file_path, 'w') as input_file:
-        for path, label in itertools.izip(paths, labels):
+        for path, label in input_list:
             input_file.write('{0}\t{1}\n'.format(path.strip(),label.strip()))
     return file_path
 
@@ -131,28 +119,45 @@ def main():
     #read md5 list file for public data
     md5s = parse_md5s(args.md5s)
 
-    #create temporary input files for geec executables
-    user_input_list = create_input_list(args.bigwigs, args.labels)
-    public_input_list = create_input_list(md5s, md5s)
-    user_hdf5 = tmp_name()
-    user_zscore = tmp_name()
-    correlation_file = tmp_name()
-
     #public data paths
-    public_zscore = config.ZSCORE[args.assembly][args.bin][args.include][args.exclude]
-    public_matrix = config.MATRIX[args.assembly][args.bin][args.include][args.exclude]
     include_path = config.REGION[args.assembly][args.include]
     exclude_path = config.REGION[args.assembly][args.exclude]
 
-    # convert user bigwigs to hdf5 and than zscore
-    to_hdf5(user_input_list, args.assembly, user_hdf5, args.bin)
-    to_zscore(user_input_list, args.assembly, user_hdf5, user_zscore, args.bin, include_path, exclude_path)
+    #create temporary input files for geec executables
+    input_list = []
+
+    user_input_list = []
+    for bw, label in itertools.izip(args.bigwigs, args.labels):
+        user_hdf5 = tmp_name()
+        user_filtered_hdf5 = tmp_name()
+        user_input_list.append((bw, label, user_hdf5, user_filtered_hdf5))
+        input_list.append(user_filtered_file, label)
+
+
+    public_path_dict = {}
+    public_hdf5_paths_file = config.HDF5[args.assembly][args.bin][args.include][args.exclude]
+    with open(public_hdf5_paths_file) as public_list:
+        for line in public_list:
+            line = line.split()
+            public_path_dict[line[1]] = line[0]
+
+    for md5 in md5s:
+        if public_path_dict.get(md5, False)
+            input_list.append(public_path_dict.get(md5), md5)
+
+    correlation_file = tmp_name()
+    input_list_path = create_input_list(input_list)
+
+    # convert user bigwigs to hdf5 and than filter it
+    for raw_file, name, user_hdf5, user_filtered_hdf5 in user_input_list:
+        to_hdf5(raw_file, name, args.assembly, user_hdf5, args.bin)
+        filter_hdf5(name, args.assembly, user_hdf5, user_filtered_hdf5, args.bin, include_path, exclude_path)
 
     #correlate all uncorrelated matrix cells
-    correlate(user_input_list, public_input_list, args.assembly, user_zscore, public_zscore, correlation_file, args.bin)
+    correlate(input_list_path, args.assembly, correlation_file, args.bin)
 
     #generate the final matrix
-    complete_matrix(user_input_list, public_input_list, args.assembly, correlation_file, public_matrix, args.output)
+    make_matrix(input_list_path, args.assembly, correlation_file, args.output)
 
 if __name__ == '__main__':
     main()
