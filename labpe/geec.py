@@ -131,7 +131,7 @@ def main():
         user_hdf5 = tmp_name()
         user_filtered_hdf5 = tmp_name()
         user_input_list.append((bw, label, user_hdf5, user_filtered_hdf5))
-        input_list.append(user_filtered_file, label)
+        input_list.append(user_filtered_hdf5, label)
 
 
     public_path_dict = {}
