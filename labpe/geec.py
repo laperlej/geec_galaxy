@@ -5,7 +5,7 @@ import tempfile
 import itertools
 import os
 
-sys.path.insert(0, '/Users/Jon/Projects/geec_tools/python/utils')
+sys.path.insert(0, '/home/galaxy/geec_tools/python/utils')
 import config
 
 def to_hdf5(raw_file, name, assembly, user_hdf5, resolution):
