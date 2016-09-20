@@ -21,7 +21,7 @@ def to_hdf5(raw_file, name, assembly, user_hdf5, resolution):
                      user_hdf5,
                      resolution])
 
-def filter_hdf5(name, assembly, user_hdf5, user_zscore, resolution, include, exclude):
+def filter_hdf5(name, assembly, user_hdf5, filtered_hdf5, resolution, include, exclude):
     """Usage: filter    {input.hdf5}
                         {name}
                         {output.hdf5}
