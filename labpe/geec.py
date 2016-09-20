@@ -131,7 +131,7 @@ def main():
         user_hdf5 = tmp_name()
         user_filtered_hdf5 = tmp_name()
         user_input_list.append((bw, label, user_hdf5, user_filtered_hdf5))
-        input_list.append(user_filtered_hdf5, label)
+        input_list.append((user_filtered_hdf5, label))
 
 
     public_path_dict = {}
@@ -143,7 +143,7 @@ def main():
 
     for md5 in md5s:
         if public_path_dict.get(md5, False):
-            input_list.append(public_path_dict.get(md5), md5)
+            input_list.append((public_path_dict.get(md5), md5))
 
     correlation_file = tmp_name()
     input_list_path = create_input_list(input_list)
