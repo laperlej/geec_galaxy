@@ -23,6 +23,15 @@
     --assembly
     $assembly
   </command>
+  <env exec="module load python64/2.7.5" />
+  <env exec="module load gcc/5.2.0" />
+  <env exec="module load intel64/12.0.5.220" />
+  <env exec="module load openmpi_intel64/1.4.3_ofed" />
+  <env exec="module load hdf5/1.8.16" />
+  <env exec="module load boost64/1.61.0" />
+  <env exec="module load szip/2.1" />
+  <env exec="module load cmake/2.8.8" />
+  <env exec="module load R/3.0.1" />
   <requirements>
     <requirement type="python-module">numpy</requirement>
   </requirements>
