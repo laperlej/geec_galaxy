@@ -148,13 +148,18 @@ def main():
     correlation_file = tmp_name()
     input_list_path = create_input_list(input_list)
 
-    # convert user bigwigs to hdf5 and than filter it
+    print input_list
+    print open(input_list_path).read()
+
+    # convert user bigwigs to hdf5 and filter it
     for raw_file, name, user_hdf5, user_filtered_hdf5 in user_input_list:
         to_hdf5(raw_file, name, args.assembly, user_hdf5, args.bin)
         filter_hdf5(name, args.assembly, user_hdf5, user_filtered_hdf5, args.bin, include_path, exclude_path)
 
     #correlate all uncorrelated matrix cells
     correlate(input_list_path, args.assembly, correlation_file, args.bin)
+
+    print open(correlation_file).read()
 
     #generate the final matrix
     make_matrix(input_list_path, args.assembly, correlation_file, args.output)
