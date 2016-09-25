@@ -152,6 +152,8 @@ def main():
     correlation_file = tmp_name()
     input_list_path = create_input_list(input_list)
 
+    print open(input_list_path).read()
+
     # convert user bigwigs to hdf5 and filter it
     for raw_file, name, user_hdf5, user_filtered_hdf5 in user_input_list:
         to_hdf5(raw_file, name, args.assembly, user_hdf5, args.bin)
