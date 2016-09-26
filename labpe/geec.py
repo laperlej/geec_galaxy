@@ -142,7 +142,6 @@ def main():
             public_path_dict[line[1]] = line[0]
 
     for md5 in md5s:
-        print md5
         if public_path_dict.get(md5, False):
             input_list.append((public_path_dict.get(md5), md5))
 
