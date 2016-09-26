@@ -141,9 +141,6 @@ def main():
             line = line.split()
             public_path_dict[line[1]] = line[0]
 
-    print config.HDF5[args.assembly][args.bin][args.include][args.exclude]
-    print public_path_dict 
-
     for md5 in md5s:
         print md5
         if public_path_dict.get(md5, False):
@@ -151,8 +148,6 @@ def main():
 
     correlation_file = tmp_name()
     input_list_path = create_input_list(input_list)
-
-    print open(input_list_path).read()
 
     # convert user bigwigs to hdf5 and filter it
     for raw_file, name, user_hdf5, user_filtered_hdf5 in user_input_list:
