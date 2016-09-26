@@ -76,7 +76,7 @@ def parse_md5s(md5s_path):
         with open(md5s_path) as md5s_file:
             md5s_file.readline()
             for line in md5s_file:
-                md5s.append(line)
+                md5s.append(line.strip())
     return md5s
 
 def tmp_name():
