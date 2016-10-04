@@ -147,7 +147,7 @@ def main():
 
     for md5 in md5s:
         if public_path_dict.get(md5, False):
-            input_list.append((public_path_dict.get(md5), md5_json.get("datasets", {}).get(md5, {}).get("file_name"))
+            input_list.append(public_path_dict.get(md5), md5_json.get("datasets", {}).get(md5, {}).get("file_name"))
 
     correlation_file = tmp_name()
     input_list_path = create_input_list(input_list)
