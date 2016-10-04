@@ -4,6 +4,7 @@ import subprocess
 import tempfile
 import itertools
 import os
+import json
 
 sys.path.insert(0, '/home/galaxy/geec_tools/python/utils')
 import config
@@ -70,13 +71,11 @@ def create_input_list(input_list):
             input_file.write('{0}\t{1}\n'.format(path.strip(),label.strip()))
     return file_path
 
-def parse_md5s(md5s_path):
+def parse_md5s(md5_json):
     md5s = []
-    if md5s_path:
-        with open(md5s_path) as md5s_file:
-            md5s_file.readline()
-            for line in md5s_file:
-                md5s.append(line.strip())
+    if md5_json:
+      for md5 in md5_json["datasets"].iterkeys():
+        md5s.append(md5)
     return md5s
 
 def tmp_name():
@@ -117,7 +116,12 @@ def main():
         args.labels = []
 
     #read md5 list file for public data
-    md5s = parse_md5s(args.md5s)
+    if args.md5s:
+      md5_json = json.load(args.md5s)
+      md5s = parse_md5s(md5_json)
+    else:
+      md5_json = {}
+      md5s = []
 
     #public data paths
     include_path = config.REGION[args.assembly][args.include]
@@ -143,7 +147,7 @@ def main():
 
     for md5 in md5s:
         if public_path_dict.get(md5, False):
-            input_list.append((public_path_dict.get(md5), md5))
+            input_list.append((public_path_dict.get(md5), md5_json.get("datasets", {}).get(md5)))
 
     correlation_file = tmp_name()
     input_list_path = create_input_list(input_list)
