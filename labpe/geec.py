@@ -63,7 +63,7 @@ def make_matrix(input_list, assembly, correlation_file, output_matrix, meta_json
                  correlation_file,
                  output_matrix]
     if meta_json:
-      arguments += meta_json
+      arguments += [meta_json]
     subprocess.call(arguments)
 
 def create_input_list(input_list):
