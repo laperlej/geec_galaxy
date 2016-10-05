@@ -52,17 +52,19 @@ def correlate(input_list, assembly, correlation_file, resolution):
                      resolution
                      ])
 
-def make_matrix(input_list, assembly, correlation_file, output_matrix):
+def make_matrix(input_list, assembly, correlation_file, output_matrix, meta_json = ""):
     """
     python make_matrix.py {list_path} {chrom_size} {corr_path} {output_path}
     """
-    subprocess.call(['python', 
-                     config.MAKE_MATRIX,
-                     input_list,
-                     config.CHROM_SIZE[assembly],
-                     correlation_file,
-                     output_matrix
-                     ])
+    arguments = ['python', 
+                 config.MAKE_MATRIX,
+                 input_list,
+                 config.CHROM_SIZE[assembly],
+                 correlation_file,
+                 output_matrix]
+    if meta_json:
+      arguments += meta_json
+    subprocess.call(arguments)
 
 def create_input_list(input_list):
     file_path = tmp_name()
@@ -161,7 +163,7 @@ def main():
     correlate(input_list_path, args.assembly, correlation_file, args.bin)
 
     #generate the final matrix
-    make_matrix(input_list_path, args.assembly, correlation_file, args.output)
+    make_matrix(input_list_path, args.assembly, correlation_file, args.output, args.md5s)
 
 if __name__ == '__main__':
     main()
