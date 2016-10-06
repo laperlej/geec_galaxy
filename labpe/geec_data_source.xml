@@ -3,7 +3,7 @@
 <tool id="geec_data_source" name="GeEC Public Datasets" tool_type="data_source">
   <description>description</description>
   <!--$__app__.config.output_size_limit-->
-  <command interpreter="python"> data_source.py $output 0</command>
+  <command interpreter="python"> data_source.py $output $__app__.config.output_size_limit</command>
 
   <inputs action="http://geec.herokuapp.com/" check_values="false" method="get">
     <param name="GALAXY_URL" type="baseurl" value="/tool_runner" />
