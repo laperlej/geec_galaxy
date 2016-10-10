@@ -12,7 +12,7 @@
   </inputs>
 
   <outputs>
-    <data format="tabular" name="output" />
+    <data format="Json" name="output" label="$getVar( 'title', 'failure' )"/>
   </outputs>
 
   <options sanitize="False" refresh="True"/>
