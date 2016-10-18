@@ -27,11 +27,14 @@
     <requirement type="python-module">numpy</requirement>
   </requirements>
   <inputs>
-    <param format="BigWig" name="userData" type="data" label="User's dataset(s)" optional="true" multiple="true" help="Formats currently supported: BigWig, BedGraph, Wig"/>
-    <param format="Tabular" name="ihecdata" type="data" label="Selected public datasets list file(s)" optional="true" multiple="false" help='List(s) containing public dataset IDs created through the "GeEC Public Datasets" selection tool'/>
+    <param format="BigWig" name="userData" type="data" label="User's dataset(s)" optional="true" multiple="true" help="Formats currently supported: BigWig"/>
+    
+    <param format="Json" name="ihecdata" type="data" label="Selected public datasets list file(s)" optional="true" multiple="false" help='List(s) containing public dataset IDs created through the "GeEC Public Datasets" selection tool'/>
+
     <param name="assembly" type="select" label="Assembly of the compared datasets" help="Any dataset from a different assembly will be ignored">
       <option value="hg19">hg19</option>
     </param>
+
     <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying the next parameters">
         <option value="10000">10000</option>
     </param>
