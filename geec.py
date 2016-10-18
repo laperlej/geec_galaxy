@@ -6,8 +6,10 @@ import itertools
 import os
 import json
 
-sys.path.insert(0, '/home/galaxy/geec_tools/python/utils')
+sys.path.insert(0, 'geec_tools/python/utils')
 import config
+
+PUBLIC_DATA_ROOT = "/home/galaxy/public"
 
 def to_hdf5(raw_file, name, assembly, user_hdf5, resolution):
     """Usage: to_hdf5 {dataset.bw}
@@ -145,7 +147,7 @@ def main():
     with open(public_hdf5_paths_file) as public_list:
         for line in public_list:
             line = line.split()
-            public_path_dict[line[1]] = line[0]
+            public_path_dict[line[1]] = os.path.join(PUBLIC_DATA_ROOT, line[0])
 
     for md5 in md5s:
         if public_path_dict.get(md5, False):
