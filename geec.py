@@ -7,8 +7,7 @@ import os
 import json
 import os.path
 
-sys.path.insert(0, os.path.join(__file__, 'geec_tools/python/utils'))
-print os.path.join(__file__, 'geec_tools/python/utils')
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'geec_tools/python/utils'))
 import config
 
 PUBLIC_DATA_ROOT = "/home/galaxy/public"
