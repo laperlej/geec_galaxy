@@ -5,8 +5,9 @@ import tempfile
 import itertools
 import os
 import json
+import os.path
 
-sys.path.insert(0, 'geec_tools/python/utils')
+sys.path.insert(0, os.path.join(__file__, 'geec_tools/python/utils'))
 import config
 
 PUBLIC_DATA_ROOT = "/home/galaxy/public"
