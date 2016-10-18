@@ -5,7 +5,7 @@
   <!--$__app__.config.output_size_limit-->
   <command interpreter="python"> data_source.py $output $__app__.config.output_size_limit</command>
 
-  <inputs action="http://geec-web.udes.genap.ca/" check_values="false" method="get">
+  <inputs action="http://geec-datasets.udes.genap.ca/" check_values="false" method="get">
     <param name="GALAXY_URL" type="baseurl" value="/tool_runner" />
     <param name="tool_id" type="hidden" value="geec_data_source" />
     <param name="sendToGalaxy" type="hidden" value="1" />
