@@ -128,6 +128,8 @@ def main():
       md5_json = {}
       md5s = []
 
+    print config.REGION[args.assembly]
+
     #public data paths
     include_path = config.REGION[args.assembly][args.include]
     exclude_path = config.REGION[args.assembly][args.exclude]
