@@ -128,8 +128,6 @@ def main():
       md5_json = {}
       md5s = []
 
-    print config.REGION[args.assembly]
-
     #public data paths
     include_path = config.REGION[args.assembly][args.include]
     exclude_path = config.REGION[args.assembly][args.exclude]
@@ -161,8 +159,6 @@ def main():
 
     # convert user bigwigs to hdf5 and filter it
     for raw_file, name, user_hdf5, user_filtered_hdf5 in user_input_list:
-        print user_hdf5
-        print user_filtered_hdf5 
         to_hdf5(raw_file, name, args.assembly, user_hdf5, args.bin)
         filter_hdf5(name, args.assembly, user_hdf5, user_filtered_hdf5, args.bin, include_path, exclude_path)
 
