@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<tool_dependency>
-  <package name="geec" version="0.1.0">
-    <repository name="geec" owner="jhon" prior_installation_required="False" />
-  </package>
-</tool_dependency>
