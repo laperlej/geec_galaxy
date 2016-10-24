@@ -36,10 +36,12 @@
         <option value="hg19">hg19</option>
         <option value="saccer3">sacCer3</option>
       </param>
+      
       <when value="hg19">
         <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying the next parameters">
           <option value="10000">10000</option>
         </param>
+
         <param name="include" type="select" label="Selection regions" help="The comparison will involve only bins overlapping with these regions">
           <option value="all">Whole genome</option>
         </param>
