@@ -1,4 +1,4 @@
-<tool id="geec" name="GeEC">
+<tool id="geec" name="GeEC Matrix">
   <description>description</description>
   <command interpreter="python">
     geec.py
