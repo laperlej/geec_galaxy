@@ -80,8 +80,7 @@ def parse_md5s(md5_json):
     md5s = []
     if md5_json:
       for md5 in md5_json["datasets"]:
-        print md5
-        md5s.append(md5["md5sum"])
+        md5s.append(md5)
     return md5s
 
 def tmp_name():
