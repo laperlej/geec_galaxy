@@ -43,7 +43,7 @@
       </when>
       <when value="saccer3">
         <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying the next parameters">
-          <option value="1000">10000</option>
+          <option value="1000">1000</option>
         </param>
       </when>
     </conditional>
