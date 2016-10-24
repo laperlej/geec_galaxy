@@ -1,3 +1,4 @@
+source /cvmfs/bioinformatics.usherbrooke.ca/galaxy/prog/lmod/lmod/init/profile
 module use /cvmfs/soft.mugqic/CentOS6/modulefiles/
 module use /cvmfs/opt.usherbrooke.ca/CentOS6/Modules/modulefiles.x86_64/
 module use /cvmfs/opt.usherbrooke.ca/modulesfiles

@@ -24,7 +24,7 @@
     $assembly
   </command>
   <requirements>
-    <requirement type="package" version="0.1.0">GEeC_req</requirement>
+    <requirement type="package" version="0.1.0">geec</requirement>
   </requirements>
   <inputs>
     <param format="bigwig" name="userData" type="data" label="User's dataset(s)" optional="true" multiple="true" help="Formats currently supported: BigWig"/>
