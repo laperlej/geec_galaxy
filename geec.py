@@ -79,8 +79,8 @@ def create_input_list(input_list):
 def parse_md5s(md5_json):
     md5s = []
     if md5_json:
-      for md5 in md5_json["datasets"].iterkeys():
-        md5s.append(md5)
+      for md5 in md5_json["datasets"]:
+        md5s.append(md5["md5sum"])
     return md5s
 
 def tmp_name():
