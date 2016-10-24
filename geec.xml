@@ -40,22 +40,32 @@
         <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying the next parameters">
           <option value="10000">10000</option>
         </param>
+        <param name="include" type="select" label="Selection regions" help="The comparison will involve only bins overlapping with these regions">
+          <option value="all">Whole genome</option>
+        </param>
+
+        <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
+          <option value="blacklisted">Blacklisted</option>
+          <option value="none">None</option>
+        </param>
       </when>
+
       <when value="saccer3">
         <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying the next parameters">
           <option value="1000">1000</option>
         </param>
+
+        <param name="include" type="select" label="Selection regions" help="The comparison will involve only bins overlapping with these regions">
+          <option value="all">Whole genome</option>
+        </param>
+
+        <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
+          <option value="blacklisted">Blacklisted</option>
+          <option value="none">None</option>
+        </param>
       </when>
+
     </conditional>
-
-    <param name="include" type="select" label="Selection regions" help="The comparison will involve only bins overlapping with these regions">
-      <option value="all">Whole genome</option>
-    </param>
-
-    <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
-      <option value="blacklisted">Blacklisted</option>
-      <option value="none">None</option>
-    </param>
 
     <param name="metric" type="select" label="Correlation metric">
       <option value="pearson">Pearson</option>
