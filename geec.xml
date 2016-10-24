@@ -13,15 +13,15 @@
     --md5s
     $ihecdata
     --include
-    $include
+    $cond.include
     --exclude
-    $exclude
+    $cond.exclude
     --bin
-    $resolution
+    $cond.resolution
     --output
     $output
     --assembly
-    $assembly
+    $cond.assembly
   </command>
   <requirements>
     <requirement type="package" version="0.1.0">geec</requirement>
@@ -31,12 +31,12 @@
     
     <param format="json" name="ihecdata" type="data" label="Selected public datasets list file(s)" optional="true" multiple="false" help='List(s) containing public dataset IDs created through the "GeEC Public Datasets" selection tool'/>
 
-    <conditional name="assembly_and_resolution">
+    <conditional name="cond">
       <param name="assembly" type="select" label="Assembly of the compared datasets" help="Any dataset from a different assembly will be ignored">
         <option value="hg19">hg19</option>
         <option value="saccer3">sacCer3</option>
       </param>
-      
+
       <when value="hg19">
         <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying the next parameters">
           <option value="10000">10000</option>
