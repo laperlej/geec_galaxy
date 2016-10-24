@@ -12,4 +12,4 @@ simlink to env.sh in folder <tool_dependency_dir>/geec/0.1.0/
 
 simlink to geec_galaxy in folder galaxy-dist/tools/
 
-add geec.xml, geec_datasource.xml in tool_conf.xml
+add geec_galaxy/geec.xml, geec_galaxy/geec_datasource.xml in tool_conf.xml
