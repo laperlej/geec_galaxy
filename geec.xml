@@ -1,5 +1,5 @@
 <tool id="geec" name="GeEC Matrix">
-  <description>description</description>
+  <description>creates a correlation matrix between many datasets</description>
   <command interpreter="python">
     geec.py
     --bigwigs
@@ -31,13 +31,22 @@
     
     <param format="json" name="ihecdata" type="data" label="Selected public datasets list file(s)" optional="true" multiple="false" help='List(s) containing public dataset IDs created through the "GeEC Public Datasets" selection tool'/>
 
-    <param name="assembly" type="select" label="Assembly of the compared datasets" help="Any dataset from a different assembly will be ignored">
-      <option value="hg19">hg19</option>
-    </param>
-
-    <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying the next parameters">
-        <option value="10000">10000</option>
-    </param>
+    <conditional name="assembly_and_resolution">
+      <param name="assembly" type="select" label="Assembly of the compared datasets" help="Any dataset from a different assembly will be ignored">
+        <option value="hg19">hg19</option>
+        <option value="saccer3">sacCer3</option>
+      </param>
+      <when value="hg19">
+        <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying the next parameters">
+          <option value="10000">10000</option>
+        </param>
+      </when>
+      <when value="saccer3">
+        <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying the next parameters">
+          <option value="1000">10000</option>
+        </param>
+      </when>
+    </conditional>
 
     <param name="include" type="select" label="Selection regions" help="The comparison will involve only bins overlapping with these regions">
       <option value="all">Whole genome</option>
