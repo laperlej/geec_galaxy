@@ -154,8 +154,8 @@ def main():
             input_list.append((public_path_dict.get(md5), md5))
 
     correlation_file = "/home/laperlej/corr.txt"#tmp_name()
-    print correlation_file
     input_list_path = create_input_list(input_list)
+    print input_list
     print input_list_path
 
     # convert user bigwigs to hdf5 and filter it
