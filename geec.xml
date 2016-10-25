@@ -1,5 +1,5 @@
 <tool id="geec" name="GeEC Matrix">
-  <description>creates a correlation matrix between many datasets</description>
+  <description>creates a correlation matrix between many datasets [v0.5]</description>
   <command interpreter="python">
     geec.py
     --bigwigs
@@ -29,20 +29,20 @@
   <inputs>
     <param format="bigwig" name="userData" type="data" label="User's dataset(s)" optional="true" multiple="true" help="Formats currently supported: BigWig"/>
     
-    <param format="json" name="ihecdata" type="data" label="Selected public datasets list file(s)" optional="true" multiple="false" help='List(s) containing public dataset IDs created through the "GeEC Public Datasets" selection tool'/>
+    <param format="json" name="ihecdata" type="data" label="Selected public datasets metadata" optional="true" multiple="false" help='It’s a file imported from the "GeEC Public Datasets" selection tool and containing public dataset metadata in json format'/>
 
     <conditional name="cond">
-      <param name="assembly" type="select" label="Assembly of the compared datasets" help="Any dataset from a different assembly will be ignored">
+      <param name="assembly" type="select" label="Assembly" help="Any dataset from a different assembly will be ignored">
         <option value="hg19">hg19</option>
         <option value="saccer3">sacCer3</option>
       </param>
 
       <when value="hg19">
-        <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying the next parameters">
+        <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying next parameters">
           <option value="10000">10000</option>
         </param>
 
-        <param name="include" type="select" label="Selection regions" help="The comparison will involve only bins overlapping with these regions">
+        <param name="include" type="select" label="Selection regions" help="The comparison will only involve bins overlapping these regions">
           <option value="all">Whole genome</option>
         </param>
 
@@ -53,11 +53,11 @@
       </when>
 
       <when value="saccer3">
-        <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying the next parameters">
+        <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying next parameters">
           <option value="1000">1000</option>
         </param>
 
-        <param name="include" type="select" label="Selection regions" help="The comparison will involve only bins overlapping with these regions">
+        <param name="include" type="select" label="Selection regions" help="The comparison will only involve bins overlapping these regions">
           <option value="all">Whole genome</option>
         </param>
 
@@ -76,5 +76,14 @@
   <outputs>
     <data format="tabular" name="output" />
   </outputs>
+
+<help>
+.. class:: infomark
+**What it does**
+GeEC Matrix is taking as input a json file coming from the "GeEC Public Datasets" tool and containing the metadata of the selected public datasets, including their md5sum. The list of md5sum is used to reach the pre-calculated internal hdf5 files of the selected public datasets (generated at the selected resolution, with the appropriate selection and exclusion filters, and using the selected metric and only the canonical chromosomes). The large public datasets are therefore not transferred to the user’s history.
+A user can optionally select datasets from his history, which will then be processed based on the selected options, then compared to the public datasets. Actually it is also possible to run GeEC Matrix strictly on private datasets (without public datasets). The assembly option is used to select the appropriate chromSizes file to internally generate the hdf5 files. 
+The output of GeEC Matrix is a tsv file containing the correlation matrix and using a concatenation of the filename and the md5sum as column/line identifiers.
+It is possible to next use “GeEC Annotate” to post-process the generated correlation matrix to create a heatmap with its dendrogram as well as a multidimensional scaling representation, and even to cluster the datasets and annotate these clusters with the provided metadata.
+</help>
 
 </tool>
