@@ -34,7 +34,7 @@
     <conditional name="cond">
       <param name="assembly" type="select" label="Assembly" help="Any dataset from a different assembly will be ignored">
         <option value="hg19">hg19</option>
-        <option value="saccer3">sacCer3</option>
+        <option value="sacCer3">sacCer3</option>
       </param>
 
       <when value="hg19">
@@ -52,7 +52,7 @@
         </param>
       </when>
 
-      <when value="saccer3">
+      <when value="sacCer3">
         <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying next parameters">
           <option value="1000">1000</option>
         </param>
