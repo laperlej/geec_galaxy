@@ -10,7 +10,7 @@ import os.path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'geec_tools/python/utils'))
 import config
 
-PUBLIC_DATA_ROOT = "/home/galaxy/public"
+PUBLIC_DATA_ROOT = "/home/laperlej/geec/public"
 
 def to_hdf5(raw_file, name, assembly, user_hdf5, resolution):
     """Usage: to_hdf5 {dataset.bw}
