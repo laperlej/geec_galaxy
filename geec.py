@@ -48,6 +48,12 @@ def correlate(input_list, assembly, correlation_file, resolution):
                           {chrom_sizes}
                           {output.results}
                           {bin_size}\n");"""
+    print [config.CORRELATION,
+                     input_list,
+                     config.CHROM_SIZE[assembly],
+                     correlation_file,
+                     resolution
+                     ]
     subprocess.call([config.CORRELATION,
                      input_list,
                      config.CHROM_SIZE[assembly],
@@ -155,8 +161,6 @@ def main():
 
     correlation_file = "/home/laperlej/corr.txt"#tmp_name()
     input_list_path = create_input_list(input_list)
-    print input_list
-    print input_list_path
 
     # convert user bigwigs to hdf5 and filter it
     for raw_file, name, user_hdf5, user_filtered_hdf5 in user_input_list:
