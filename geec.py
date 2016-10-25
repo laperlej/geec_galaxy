@@ -131,7 +131,8 @@ def main():
     #public data paths
     include_path = config.REGION[args.assembly][args.include]
     exclude_path = config.REGION[args.assembly][args.exclude]
-
+    print include_path
+    print exclude_path
     #create temporary input files for geec executables
     input_list = []
 
@@ -145,6 +146,7 @@ def main():
 
     public_path_dict = {}
     public_hdf5_paths_file = config.HDF5[args.assembly][args.bin][args.include][args.exclude]
+    print public_hdf5_paths_file
     with open(public_hdf5_paths_file) as public_list:
         for line in public_list:
             line = line.split()
@@ -153,6 +155,8 @@ def main():
     for md5 in md5s:
         if public_path_dict.get(md5, False):
             input_list.append((public_path_dict.get(md5), md5))
+        else:
+          print "alert"
 
     correlation_file = tmp_name()
     input_list_path = create_input_list(input_list)
