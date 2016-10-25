@@ -153,7 +153,7 @@ def main():
         if public_path_dict.get(md5, False):
             input_list.append((public_path_dict.get(md5), md5))
 
-    correlation_file = tmp_name()
+    correlation_file = "/home/laperlej/corr.txt"#tmp_name()
     print correlation_file
     input_list_path = create_input_list(input_list)
     print input_list_path
