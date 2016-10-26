@@ -152,6 +152,8 @@ def main():
     for md5 in md5s:
         if public_path_dict.get(md5, False):
             input_list.append((public_path_dict.get(md5), md5))
+        else:
+          sys.stderr.write("{0} is missing".format(md5))
 
     correlation_file = "/home/laperlej/corr.txt"#tmp_name()
     input_list_path = create_input_list(input_list)
