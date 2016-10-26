@@ -1,0 +1,15 @@
+How to install:
+
+git clone https://github.com/laperlej/geec_galaxy.git
+
+cd into the geec_tools subfolder
+
+git clone https://github.com/laperlej/geec_tools.git
+
+define tool_dependency_dir in galaxy-dist/config/galaxy.ini
+
+simlink to env.sh in folder <tool_dependency_dir>/geec/0.1.0/
+
+simlink to geec_galaxy in folder galaxy-dist/tools/
+
+add geec_galaxy/geec.xml, geec_galaxy/geec_datasource.xml in tool_conf.xml
