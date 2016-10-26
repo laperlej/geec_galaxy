@@ -89,6 +89,12 @@ def tmp_name():
     os.remove(temp_path)
     return temp_path
 
+def listjson2dictjson(old_json):
+    new_json = {"datasets":{}}
+    for token in old_json["datasets"]:
+        new_json["datasets"][token["md5sum"]] = token
+    return new_json
+
 def main():
     """
     sample input:
@@ -128,6 +134,8 @@ def main():
       md5_json = {}
       md5s = []
 
+    md5_json = listjson2dictjson(md5_json):
+
     #public data paths
     include_path = config.REGION[args.assembly][args.include]
     exclude_path = config.REGION[args.assembly][args.exclude]
@@ -153,7 +161,7 @@ def main():
         if public_path_dict.get(md5, False):
             input_list.append((public_path_dict.get(md5), md5))
         else:
-          print "{0} is missing".format(md5)
+          print "{0} is missing".format(md5_json["datasets"][md5].get("file_name", "unknown"))
 
     correlation_file = "/home/laperlej/corr.txt"#tmp_name()
     input_list_path = create_input_list(input_list)
