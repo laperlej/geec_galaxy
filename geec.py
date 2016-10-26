@@ -134,7 +134,7 @@ def main():
       md5_json = {}
       md5s = []
 
-    md5_json = listjson2dictjson(md5_json):
+    md5_json = listjson2dictjson(md5_json)
 
     #public data paths
     include_path = config.REGION[args.assembly][args.include]
