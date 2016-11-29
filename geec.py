@@ -21,7 +21,7 @@ def to_hdf5(raw_file, name, assembly, user_hdf5, resolution):
     subprocess.call([config.TO_HDF5,
                      raw_file,
                      name,
-                     config.CHROM_SIZE[assembly],
+                     config.get_chrom_sizes(assembly),
                      user_hdf5,
                      resolution])
 
@@ -37,7 +37,7 @@ def filter_hdf5(name, assembly, user_hdf5, filtered_hdf5, resolution, include, e
                      user_hdf5,
                      name,
                      filtered_hdf5,
-                     config.CHROM_SIZE[assembly],
+                     config.get_chrom_sizes(assembly),
                      resolution,
                      include,
                      exclude
@@ -50,7 +50,7 @@ def correlate(input_list, assembly, correlation_file, resolution):
                           {bin_size}\n");"""
     subprocess.call([config.CORRELATION,
                      input_list,
-                     config.CHROM_SIZE[assembly],
+                     config.get_chrom_sizes(assembly),
                      correlation_file,
                      resolution
                      ])
@@ -62,7 +62,7 @@ def make_matrix(input_list, assembly, correlation_file, output_matrix, meta_json
     arguments = ['python', 
                  config.MAKE_MATRIX,
                  input_list,
-                 config.CHROM_SIZE[assembly],
+                 config.get_chrom_sizes(assembly),
                  correlation_file,
                  output_matrix]
     if meta_json:
@@ -137,8 +137,8 @@ def main():
     md5_json = listjson2dictjson(md5_json)
 
     #public data paths
-    include_path = config.REGION[args.assembly][args.include]
-    exclude_path = config.REGION[args.assembly][args.exclude]
+    include_path = config.get_region(args.assembly, args.include)
+    exclude_path = config.get_region(args.assembly, args.exclude)
     #create temporary input files for geec executables
     input_list = []
 
@@ -146,12 +146,13 @@ def main():
     for bw, label in itertools.izip(args.bigwigs, args.labels):
         user_hdf5 = tmp_name()
         user_filtered_hdf5 = tmp_name()
+        label = label.split("/")[-1]
         user_input_list.append((bw, label, user_hdf5, user_filtered_hdf5))
         input_list.append((user_filtered_hdf5, label))
 
 
     public_path_dict = {}
-    public_hdf5_paths_file = config.HDF5[args.assembly][args.bin][args.include][args.exclude]
+    public_hdf5_paths_file = config.get_hdf5_list(args.assembly, args.bin, args.include, args.exclude)
     with open(public_hdf5_paths_file) as public_list:
         for line in public_list:
             line = line.split()
@@ -163,7 +164,7 @@ def main():
         else:
           print "{0} is missing".format(md5_json["datasets"][md5].get("file_name", "unknown"))
 
-    correlation_file = "/home/laperlej/corr.txt"#tmp_name()
+    correlation_file = tmp_name()
     input_list_path = create_input_list(input_list)
 
     # convert user bigwigs to hdf5 and filter it

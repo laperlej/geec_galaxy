@@ -40,6 +40,7 @@
 
       <when value="hg19">
         <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying next parameters">
+          <option value="1000">1000</option>
           <option value="10000">10000</option>
         </param>
 
@@ -48,13 +49,14 @@
         </param>
 
         <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
-          <option value="blacklisted">Blacklisted</option>
+          <option value="blklst">Blacklisted</option>
           <option value="none">None</option>
         </param>
       </when>
 
       <when value="hg38">
         <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying next parameters">
+          <option value="1000">1000</option>
           <option value="10000">10000</option>
         </param>
 
@@ -63,13 +65,13 @@
         </param>
 
         <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
-          <option value="blacklisted">Blacklisted</option>
           <option value="none">None</option>
         </param>
       </when>
 
       <when value="mm10">
         <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying next parameters">
+          <option value="1000">1000</option>
           <option value="10000">10000</option>
         </param>
 
@@ -78,7 +80,7 @@
         </param>
 
         <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
-          <option value="blacklisted">Blacklisted</option>
+          <option value="blklst">Blacklisted</option>
           <option value="none">None</option>
         </param>
       </when>
