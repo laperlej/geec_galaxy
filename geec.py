@@ -48,7 +48,7 @@ def correlate(input_list, assembly, correlation_file, resolution):
                           {chrom_sizes}
                           {output.results}
                           {bin_size}\n");"""
-    print input_list, assembly, correlation_file, resolution
+    print type(input_list), type(assembly), type(correlation_file), type(resolution)
     subprocess.call([config.CORRELATION,
                      input_list,
                      config.get_chrom_sizes(assembly),
