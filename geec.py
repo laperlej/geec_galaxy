@@ -24,7 +24,7 @@ def to_hdf5(raw_file, name, assembly, user_hdf5, resolution):
                  config.get_chrom_sizes(assembly),
                  user_hdf5,
                  resolution]
-    print (type(x) for x in arguments)
+    print [type(x) for x in arguments]
     subprocess.call(arguments)
 
 def filter_hdf5(name, assembly, user_hdf5, filtered_hdf5, resolution, include, exclude):
@@ -43,7 +43,7 @@ def filter_hdf5(name, assembly, user_hdf5, filtered_hdf5, resolution, include, e
                  resolution,
                  include,
                  exclude]
-    print (type(x) for x in arguments)
+    print [type(x) for x in arguments]
     subprocess.call(arguments)
 
 def correlate(input_list, assembly, correlation_file, resolution):
@@ -56,7 +56,7 @@ def correlate(input_list, assembly, correlation_file, resolution):
                  config.get_chrom_sizes(assembly),
                  correlation_file,
                  resolution]
-    print (type(x) for x in arguments)
+    print [type(x) for x in arguments]
     subprocess.call(arguments)
 
 def make_matrix(input_list, assembly, correlation_file, output_matrix, meta_json = ""):
@@ -71,7 +71,7 @@ def make_matrix(input_list, assembly, correlation_file, output_matrix, meta_json
                  output_matrix]
     if meta_json:
       arguments += [meta_json]
-    print (type(x) for x in arguments)
+    print [type(x) for x in arguments]
     subprocess.call(arguments)
 
 def create_input_list(input_list):
