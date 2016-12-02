@@ -152,8 +152,9 @@ def main():
         input_list.append((user_filtered_hdf5, label))
 
     for md5 in md5s:
-        if os.path.isfile(config.get_hdf5(md5)):
-            input_list.append((config.get_hdf5(md5), md5))
+        hdf5_path = config.get_hdf5(md5, args.assembly, args.bin, args.include, args.exclude)
+        if os.path.isfile(hdf5_path):
+            input_list.append((hdf5_path, md5))
         else:
             print "{0} is missing".format(md5_json["datasets"][md5].get("file_name", "unknown"))
 
