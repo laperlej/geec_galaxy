@@ -151,19 +151,11 @@ def main():
         user_input_list.append((bw, label, user_hdf5, user_filtered_hdf5))
         input_list.append((user_filtered_hdf5, label))
 
-
-    public_path_dict = {}
-    public_hdf5_paths_file = config.get_hdf5_list(args.assembly, args.bin, args.include, args.exclude)
-    with open(public_hdf5_paths_file) as public_list:
-        for line in public_list:
-            line = line.split()
-            public_path_dict[line[1]] = os.path.join(PUBLIC_DATA_ROOT, line[0])
-
     for md5 in md5s:
-        if public_path_dict.get(md5, False):
-            input_list.append((public_path_dict.get(md5), md5))
+        if os.path.isfile(config.get_hdf5(md5)):
+            input_list.append((config.get_hdf5(md5), md5))
         else:
-          print "{0} is missing".format(md5_json["datasets"][md5].get("file_name", "unknown"))
+            print "{0} is missing".format(md5_json["datasets"][md5].get("file_name", "unknown"))
 
     correlation_file = tmp_name()
     input_list_path = create_input_list(input_list)
