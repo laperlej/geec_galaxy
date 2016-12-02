@@ -18,12 +18,14 @@ def to_hdf5(raw_file, name, assembly, user_hdf5, resolution):
                       {chrom_sizes}
                       {output.hdf5}
                       {bin_size}\n"""
-    subprocess.call([config.TO_HDF5,
-                     raw_file,
-                     name,
-                     config.get_chrom_sizes(assembly),
-                     user_hdf5,
-                     resolution])
+    arguments = [config.TO_HDF5,
+                 raw_file,
+                 name,
+                 config.get_chrom_sizes(assembly),
+                 user_hdf5,
+                 resolution]
+    print (type(x) for x in arguments)
+    subprocess.call(arguments)
 
 def filter_hdf5(name, assembly, user_hdf5, filtered_hdf5, resolution, include, exclude):
     """Usage: filter    {input.hdf5}
@@ -33,28 +35,29 @@ def filter_hdf5(name, assembly, user_hdf5, filtered_hdf5, resolution, include, e
                         {bin_size}
                         {include.bed}
                         {exclude.bed}\n");"""
-    subprocess.call([config.FILTER,
-                     user_hdf5,
-                     name,
-                     filtered_hdf5,
-                     config.get_chrom_sizes(assembly),
-                     resolution,
-                     include,
-                     exclude
-                    ])
+    arguments = [config.FILTER,
+                 user_hdf5,
+                 name,
+                 filtered_hdf5,
+                 config.get_chrom_sizes(assembly),
+                 resolution,
+                 include,
+                 exclude]
+    print (type(x) for x in arguments)
+    subprocess.call(arguments)
 
 def correlate(input_list, assembly, correlation_file, resolution):
     """Usage: correlation {input_list}
                           {chrom_sizes}
                           {output.results}
                           {bin_size}\n");"""
-    print type(input_list), type(assembly), type(correlation_file), type(resolution)
-    subprocess.call([config.CORRELATION,
-                     input_list,
-                     config.get_chrom_sizes(assembly),
-                     correlation_file,
-                     resolution
-                     ])
+    arguments = [config.CORRELATION,
+                 input_list,
+                 config.get_chrom_sizes(assembly),
+                 correlation_file,
+                 resolution]
+    print (type(x) for x in arguments)
+    subprocess.call(arguments)
 
 def make_matrix(input_list, assembly, correlation_file, output_matrix, meta_json = ""):
     """
@@ -68,6 +71,7 @@ def make_matrix(input_list, assembly, correlation_file, output_matrix, meta_json
                  output_matrix]
     if meta_json:
       arguments += [meta_json]
+    print (type(x) for x in arguments)
     subprocess.call(arguments)
 
 def create_input_list(input_list):
