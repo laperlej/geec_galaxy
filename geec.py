@@ -6,6 +6,8 @@ import itertools
 import os
 import json
 import os.path
+import h5py
+import scipy.stats
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'geec_tools/python/utils'))
 import config
