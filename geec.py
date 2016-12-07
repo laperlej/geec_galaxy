@@ -70,6 +70,19 @@ def make_matrix(input_list, assembly, correlation_file, output_matrix, meta_json
       arguments += [meta_json]
     subprocess.call(arguments)
 
+def rank_hdf5(hdf5_path):
+  h5f = h5py.File(hdf5_path, 'r+')
+  for group in h5f:
+    md5 = group
+  for dset in h5f[md5]:
+    data = h5f[md5][dset]
+    assert(n < 3024616) #overflow on int64
+    n = len(data)
+    data[...] = scipy.stats.rankdata(data, method="ordinal")
+    data.attrs['sumX'] = n * (n + 1) / 2 #sum of natural numbers
+    data.attrs['sumXX'] = n * (n + 1) * (2 * n + 1) / 6 #sum of perfect squares
+  h5f.close()
+
 def create_input_list(input_list):
     file_path = tmp_name()
     with open(file_path, 'w') as input_file:
@@ -119,6 +132,7 @@ def main():
     parser.add_argument('--bin')
     parser.add_argument('--output')
     parser.add_argument('--assembly')
+    parser.add_argument('--metric')
     args = parser.parse_args()
     if args.md5s == "None":
         args.md5s = []
@@ -152,7 +166,7 @@ def main():
         input_list.append((user_filtered_hdf5, label))
 
     for md5 in md5s:
-        hdf5_path = config.get_hdf5(md5, args.assembly, args.bin, args.include, args.exclude)
+        hdf5_path = config.get_hdf5(md5, args.assembly, args.bin, args.include, args.exclude, args.metric)
         if os.path.isfile(hdf5_path):
             input_list.append((hdf5_path, md5))
         else:
@@ -165,6 +179,8 @@ def main():
     for raw_file, name, user_hdf5, user_filtered_hdf5 in user_input_list:
         to_hdf5(raw_file, name, args.assembly, user_hdf5, args.bin)
         filter_hdf5(name, args.assembly, user_hdf5, user_filtered_hdf5, args.bin, include_path, exclude_path)
+        if metric == "spearman":
+        rank_hdf5(user_filtered_hdf5)
 
     #correlate all uncorrelated matrix cells
     correlate(input_list_path, args.assembly, correlation_file, args.bin)
