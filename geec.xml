@@ -40,7 +40,6 @@
 
       <when value="hg19">
         <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying next parameters">
-          <option value="1000">1000</option>
           <option value="10000" selected="true">10000</option>
         </param>
 
@@ -56,7 +55,6 @@
 
       <when value="hg38">
         <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying next parameters">
-          <option value="1000">1000</option>
           <option value="10000" selected="true">10000</option>
         </param>
 
@@ -71,7 +69,6 @@
 
       <when value="mm10">
         <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying next parameters">
-          <option value="1000">1000</option>
           <option value="10000" selected="true">10000</option>
         </param>
 
