@@ -180,7 +180,7 @@ def main():
         to_hdf5(raw_file, name, args.assembly, user_hdf5, args.bin)
         filter_hdf5(name, args.assembly, user_hdf5, user_filtered_hdf5, args.bin, include_path, exclude_path)
         if metric == "spearman":
-        rank_hdf5(user_filtered_hdf5)
+          rank_hdf5(user_filtered_hdf5)
 
     #correlate all uncorrelated matrix cells
     correlate(input_list_path, args.assembly, correlation_file, args.bin)
