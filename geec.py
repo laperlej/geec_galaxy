@@ -14,19 +14,114 @@ import config
 
 PUBLIC_DATA_ROOT = "/home/laperlej/geec/public"
 
-def to_hdf5(raw_file, name, assembly, user_hdf5, resolution):
+class Wig(object):
+    def __init__(self, wigfile):
+        self.file = open(wigfile, 'r')
+        self.chromsize = {}
+        self.cursor = {}
+        self.reset_cursor()
+
+    def __str__(self):
+        string = []
+        for chrom, size in self.chromsize.iteritems():
+            string.append("{0} {1}".format(chrom, size))
+        return "\n".join(string)
+
+    def reset_cursor(self):
+        self.cursor["type"] = None
+        self.cursor["count"] = 0
+        self.cursor["position"] = 0
+        self.cursor["chrom"] = None
+        self.cursor["start"] = 0
+        self.cursor["step"] = 1
+        self.cursor["span"] = 1
+
+    def read(self):
+        for line in self.file:
+            line = line.strip()
+            if line[0].isdigit():
+                self.cursor["position"] = int(line.split()[0])
+                self.cursor["count"] += 1
+            elif line.startswith("fixedStep"):
+                if self.cursor["type"] is not None:
+                    self.update_chromsize()
+                self.cursor["type"] = "fixed"
+                self.parse_attributes(line)
+            elif line.startswith("variableStep"):
+                if self.cursor["type"] is not None:
+                    self.update_chromsize()
+                self.cursor["type"] = "variable"
+                self.parse_attributes(line)
+        if self.cursor["type"] is not None:
+            self.update_chromsize()
+
+
+    def parse_attribute(self, tag):
+        return tag.split("=")[1].strip()
+
+    def parse_attributes(self, line):
+        line = line.strip().split()
+        for tag in line:
+            if tag.startswith("chrom"):
+                self.cursor["chrom"] = self.parse_attribute(tag)
+            elif tag.startswith("start"):
+                self.cursor["start"] = int(self.parse_attribute(tag))
+            elif tag.startswith("step"):
+                self.cursor["step"] = int(self.parse_attribute(tag))
+            elif tag.startswith("span"):
+                self.cursor["span"] = int(self.parse_attribute(tag))
+
+    def update_chromsize(self):
+        size = 0
+        if self.cursor["type"] == "fixed":
+            size = self.cursor["start"] + self.cursor["count"] * self.cursor["step"] + self.cursor["span"]
+        elif self.cursor["type"] == "variable":
+            size = self.cursor["position"] + self.cursor["span"]
+        if size > self.chromsize.get(self.cursor["chrom"],0):
+            self.chromsize[self.cursor["chrom"]] = size
+        self.reset_cursor()
+
+def bw_to_hdf5(raw_file, name, assembly, user_hdf5, resolution):
     """Usage: to_hdf5 {dataset.bw}
                       {name}
                       {chrom_sizes}
                       {output.hdf5}
                       {bin_size}\n"""
-    arguments = [config.TO_HDF5,
+    arguments = [config.BW_TO_HDF5,
                  raw_file,
                  name,
                  config.get_chrom_sizes(assembly),
                  user_hdf5,
                  resolution]
     subprocess.call(arguments)
+
+def bg_to_hdf5(raw_file, name, assembly, user_hdf5, resolution):
+    """Usage: to_hdf5 {dataset.bw}
+                      {name}
+                      {chrom_sizes}
+                      {output.hdf5}
+                      {bin_size}\n"""
+    arguments = [config.BG_TO_HDF5,
+                 raw_file,
+                 name,
+                 config.get_chrom_sizes(assembly),
+                 user_hdf5,
+                 resolution]
+    subprocess.call(arguments)
+
+def wig_to_bigwig(wig_file, bigwig_file):
+    # wigToBigWig in.wig chrom.sizes out.bw
+    wig = Wig(wig_file)
+    wig.read()
+    chromsizes_file = temp_name()
+    with open(chromsizes_file, "w") as chrom_size:
+        chrom_size.write(str(wig))
+    arguments = [config.WIG_TO_BW,
+                 wig_file,
+                 chromsizes_file,
+                 bigwig_file]
+    subprocess.call(arguments)
+
 
 def filter_hdf5(name, assembly, user_hdf5, filtered_hdf5, resolution, include, exclude):
     """Usage: filter    {input.hdf5}
@@ -126,7 +221,8 @@ def main():
     """
     #parse arguments
     parser = argparse.ArgumentParser(description='GeEC interface for galaxy')
-    parser.add_argument('--bigwigs', nargs='*')
+    parser.add_argument('--files', nargs='*')
+    parser.add_argument('--types', nargs='*')
     parser.add_argument('--labels', nargs='*')
     parser.add_argument('--md5s')
     parser.add_argument('--include')
@@ -138,8 +234,10 @@ def main():
     args = parser.parse_args()
     if args.md5s == "None":
         args.md5s = []
-    if args.bigwigs == ['None']:
-        args.bigwigs = []
+    if args.files == ['None']:
+        args.files = []
+    if args.types == ['None']:
+        args.files = []
     if args.labels == ['None']:
         args.labels = []
 
@@ -160,11 +258,11 @@ def main():
     input_list = []
 
     user_input_list = []
-    for bw, label in itertools.izip(args.bigwigs, args.labels):
+    for file, datatype, label in itertools.izip(args.files, args.types, args.labels):
         user_hdf5 = tmp_name()
         user_filtered_hdf5 = tmp_name()
         label = label.split("/")[-1]
-        user_input_list.append((bw, label, user_hdf5, user_filtered_hdf5))
+        user_input_list.append((file, datatype, label, user_hdf5, user_filtered_hdf5))
         input_list.append((user_filtered_hdf5, label))
 
     for md5 in md5s:
@@ -178,8 +276,18 @@ def main():
     input_list_path = create_input_list(input_list)
 
     # convert user bigwigs to hdf5 and filter it
-    for raw_file, name, user_hdf5, user_filtered_hdf5 in user_input_list:
-        to_hdf5(raw_file, name, args.assembly, user_hdf5, args.bin)
+    for raw_file, datatype, name, user_hdf5, user_filtered_hdf5 in user_input_list:
+        if datatype.lower() == "bigwig":
+            bw_to_hdf5(raw_file, name, args.assembly, user_hdf5, args.bin)
+        elif datatype.lower() == "bedgraph":
+            bg_to_hdf5(raw_file, name, args.assembly, user_hdf5, args.bin)
+        elif datatype.lower() == "wig":
+            tmp_file = tmp_name()
+            wig_to_bigwig(raw_file, tmp_file)
+            bw_to_hdf5(tmp_file, name, args.assembly, user_hdf5, args.bin)
+        else:
+            print "Could not determine type for {0}".format(name)
+            continue
         filter_hdf5(name, args.assembly, user_hdf5, user_filtered_hdf5, args.bin, include_path, exclude_path)
         if metric == "spearman":
           rank_hdf5(user_filtered_hdf5)

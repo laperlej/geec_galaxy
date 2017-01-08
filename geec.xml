@@ -2,9 +2,13 @@
   <description>creates a correlation matrix between many datasets [v0.5]</description>
   <command interpreter="python">
     geec.py
-    --bigwigs
+    --files
     #for i in $userData
       $i
+    #end for
+    --types
+    #for i in $userData
+      $i.datatype
     #end for
     --labels
     #for i in $userData
