@@ -241,6 +241,7 @@ def main():
         args.labels = []
 
     #read md5 list file for public data
+    print args.md5s
     if args.md5s:
       md5_json = json.load(open(args.md5s))
       md5s = parse_md5s(md5_json)

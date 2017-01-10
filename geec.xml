@@ -8,7 +8,7 @@
     #end for
     --types
     #for i in $userData
-      $i.datatype
+      $i.extension
     #end for
     --labels
     #for i in $userData
