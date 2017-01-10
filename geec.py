@@ -160,7 +160,6 @@ def make_matrix(input_list, assembly, correlation_file, output_matrix, meta_json
     arguments = ['python', 
                  config.MAKE_MATRIX,
                  input_list,
-                 config.get_chrom_sizes(assembly),
                  correlation_file,
                  output_matrix]
     if meta_json:
@@ -296,7 +295,7 @@ def main():
     correlate(input_list_path, args.assembly, correlation_file, args.bin)
 
     #generate the final matrix
-    make_matrix(input_list_path, args.assembly, correlation_file, args.output, args.md5s)
+    make_matrix(input_list_path, correlation_file, args.output, args.md5s)
 
 if __name__ == '__main__':
     main()

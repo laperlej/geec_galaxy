@@ -33,7 +33,7 @@
     <requirement type="package" version="0.1.0">geec</requirement>
   </requirements>
   <inputs>
-    <param format="bigwig" name="userData" type="data" label="User's dataset(s)" optional="true" multiple="true" help="Formats currently supported: BigWig"/>
+    <param format="bigwig,bedgraph,wig" name="userData" type="data" label="User's dataset(s)" optional="true" multiple="true" help="Formats currently supported: bigWig, wig, bedGraph"/>
     
     <param format="json" name="ihecdata" type="data" label="Selected public datasets metadata" optional="true" multiple="false" help='A file imported from the "GeEC Public Datasets" selection tool and containing public dataset metadata in json format'/>
 
