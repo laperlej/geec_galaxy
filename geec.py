@@ -153,7 +153,7 @@ def correlate(input_list, assembly, correlation_file, resolution):
                  resolution]
     subprocess.call(arguments)
 
-def make_matrix(input_list, assembly, correlation_file, output_matrix, meta_json = ""):
+def make_matrix(input_list, correlation_file, output_matrix, meta_json = ""):
     """
     python make_matrix.py {list_path} {chrom_size} {corr_path} {output_path}
     """
