@@ -1,0 +1,63 @@
+<tool id="geec_ari" name="GeEC ARI">
+  <description>[v0.9]</description>
+  <command interpreter="python">
+    geec_ari.py
+    $matrix
+    $public_metadata
+    #if str( $clusteringAlgoCond.algo ) == "hierarchical":
+      --linkage
+      ${clusteringAlgoCond.linkage}
+    #end if
+    --title
+    GeEC-ari\ of\ $public_metadata.name
+    #if str($breakdowns) != "":
+      -b
+      $breakdowns
+    #end if
+    #if str($restrictions) != "":
+      -r
+      $restrictions
+    #end if
+    > $output
+  </command>
+  <requirements>
+    <requirement type="package" version="0.1.0">geec</requirement>
+  </requirements>
+  <inputs>
+    <param format="tabular" name="matrix" type="data" label="Matrix file" optional="false" multiple="false" help="Select a matrix coming from &quot;GeEC Matrix&quot;."/>
+
+    <param format="Json" name="public_metadata" type="data" label="Public metadata file" optional="false" multiple="false" help="Select a JSON file containing public dataset IDs and their metadata, coming from the &quot;GeEC Public Datasets&quot; selection tool."/>
+
+    <!-- <param format="Json" name="private_metadata" type="data" label="Private metadata file (optional)" optional="true" multiple="false" help="Select a JSON file containing user dataset names and their metadata."/> -->
+
+    <conditional name="clusteringAlgoCond">
+      <param name="algo" type="select" label="Clustering Algorithm" help="Select which algorithm to use for the clustering.">
+        <option value="hierarchical">Hierarchical</option>
+        <!-- <option value="spectral">Spectral</option> -->
+      </param>
+      <when value="hierarchical">
+        <param name="linkage" type="select" label="Linkage Method" help="Select which linkage method to use for the hierarchical clustering.">
+          <option value="average">Average</option>
+          <option value="complete">Complete</option>
+          <option value="weighted">Weighted</option>
+          <option value="single">Single</option>
+        </param>
+      </when>
+    </conditional>
+
+    <param name="restrictions" type="text" value="assay publishing_group cell_type" label="Category restriction" help="Restrict the annotation to some categories of metadata label by typing the category name as written in the metadata file, seperated by a blank (e.g. assay publishing_group cell_type)."/>
+
+    <param name="breakdowns" type="text" value="assay publishing_group" label="Breakdown the annotation of some categories of metadata label." help="Type the category name as written in the metadata file, seperated by a blank (e.g. assay publishing_group)."/>
+
+  </inputs>
+  <outputs>
+    <data format="tabular" name="output" />
+  </outputs>
+  <help>
+**What it does**
+
+The output of GeEC ARI is a tabular file containing two tables. The first contains the ARI values (between ~0 and 1) for each selected label category as column, and optionally a breakdown of some label categories (e.g. the breakdown of the « assay » label category will calculate ARI values individually for RNA-seq, H3K4me3, …). The second table contains the number of different labels for each category.
+
+  </help>
+
+</tool>
