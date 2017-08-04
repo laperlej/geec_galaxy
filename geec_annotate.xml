@@ -63,7 +63,7 @@
       </when>
     </conditional>
 
-    <param name="doReorderedMatrix" type="boolean" value="false" label="Do reordered matrix" help="Write a ordered copy of the original matrix that match the order inside the tsv and the pdf." />
+    <param name="doReorderedMatrix" type="boolean" value="false" label="Output a reordered version of the matrix" help="Write a ordered copy of the original matrix that match the order inside the tsv and the pdf files." />
 
     <param name="categories_name" type="text" value="assay publishing_group cell_type" label="Label category restriction" help="Restrict the annotation to some categories of metadata label by typing the label category name as written in the metadata file, seperated by a blank (e.g. assay publishing_group cell_type)."/>
 
@@ -78,7 +78,7 @@
   <outputs>
     <data format="pdf" name="pdf" label="GeEC Annotate k=$nb_clusters_cond.nb_clusters PDF on ${on_string}"/>
     <data format="tabular" name="tsv" label="GeEC Annotate k=$nb_clusters_cond.nb_clusters TSV on ${on_string}"/>
-    <data format="tabular" name="rmat" label="GeEC Annotate RMAT on ${on_string}">
+    <data format="tabular" name="rmat" label="GeEC reordered Matrix on ${on_string}">
       <filter>doReorderedMatrix</filter>
     </data>
   </outputs>
