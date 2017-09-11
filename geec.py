@@ -201,7 +201,7 @@ def tmp_name():
 
 def listjson2dictjson(old_json):
     new_json = {"datasets":{}}
-    for token in old_json["datasets"]:
+    for token in old_json.get("datasets", []):
         new_json["datasets"][token["md5sum"]] = token
     return new_json
 
@@ -288,7 +288,7 @@ def main():
             print "Could not determine type for {0}".format(name)
             continue
         filter_hdf5(name, args.assembly, user_hdf5, user_filtered_hdf5, args.bin, include_path, exclude_path)
-        if metric == "spearman":
+        if args.metric == "spearman":
           rank_hdf5(user_filtered_hdf5)
 
     #correlate all uncorrelated matrix cells
