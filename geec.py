@@ -153,6 +153,27 @@ def correlate(input_list, assembly, correlation_file, resolution):
                  resolution]
     subprocess.call(arguments)
 
+def can_slice_matrix(md5s, files, assembly, resolution, include, exclude, metric):
+    # Slice if md5s and not files and is Pearson
+    # if .mat exist
+    if md5s and not files and metric == "pearson":
+        path = config.get_matrix(assembly, resolution, include, exclude) 
+        if os.path.isfile(path):
+            return True
+    return False
+
+def slice_matrix(md5s, assembly, resolution, include, exclude, output):
+    """
+    python geec_slice_md5sum.py matrix.mat md5_1 md5_2 md5_N > output.mat
+    """
+    arguments = ['python',
+                 config.GEEC_SLICE_MD5SUM,
+                 config.get_matrix(assembly, resolution, include, exclude)]
+    arguments += md5s
+
+    with open(output, 'w') as output_file:
+        subprocess.call(arguments, stdout=output_file)
+
 def make_matrix(input_list, correlation_file, output_matrix, meta_json = ""):
     """
     python make_matrix.py {list_path} {chrom_size} {corr_path} {output_path}
@@ -250,52 +271,56 @@ def main():
 
     md5_json = listjson2dictjson(md5_json)
 
-    #public data paths
-    include_path = config.get_region(args.assembly, args.include)
-    exclude_path = config.get_region(args.assembly, args.exclude)
-    #create temporary input files for geec executables
-    input_list = []
+    #slice_matrix or make_matrix
+    if can_slice_matrix(md5s, args.files, args.assembly, args.bin, args.include, args.exclude, args.metric):
+        slice_matrix(md5s, args.assembly, args.bin, args.include, args.exclude, args.output)
+    else:
+        #public data paths
+        include_path = config.get_region(args.assembly, args.include)
+        exclude_path = config.get_region(args.assembly, args.exclude)
+        #create temporary input files for geec executables
+        input_list = []
 
-    user_input_list = []
-    for file, datatype, label in itertools.izip(args.files, args.types, args.labels):
-        user_hdf5 = tmp_name()
-        user_filtered_hdf5 = tmp_name()
-        label = label.split("/")[-1]
-        user_input_list.append((file, datatype, label, user_hdf5, user_filtered_hdf5))
-        input_list.append((user_filtered_hdf5, label))
+        user_input_list = []
+        for file, datatype, label in itertools.izip(args.files, args.types, args.labels):
+            user_hdf5 = tmp_name()
+            user_filtered_hdf5 = tmp_name()
+            label = label.split("/")[-1]
+            user_input_list.append((file, datatype, label, user_hdf5, user_filtered_hdf5))
+            input_list.append((user_filtered_hdf5, label))
 
-    for md5 in md5s:
-        hdf5_path = config.get_hdf5(md5, args.assembly, args.bin, args.include, args.exclude, args.metric)
-        if os.path.isfile(hdf5_path):
-            input_list.append((hdf5_path, md5))
-        else:
-            print "{0} is missing".format(md5_json["datasets"][md5].get("file_name", "unknown"))
+        for md5 in md5s:
+            hdf5_path = config.get_hdf5(md5, args.assembly, args.bin, args.include, args.exclude, args.metric)
+            if os.path.isfile(hdf5_path):
+                input_list.append((hdf5_path, md5))
+            else:
+                print "{0} is missing".format(md5_json["datasets"][md5].get("file_name", "unknown"))
 
-    correlation_file = tmp_name()
-    input_list_path = create_input_list(input_list)
+        correlation_file = tmp_name()
+        input_list_path = create_input_list(input_list)
 
-    # convert user bigwigs to hdf5 and filter it
-    for raw_file, datatype, name, user_hdf5, user_filtered_hdf5 in user_input_list:
-        if datatype.lower() == "bigwig":
-            bw_to_hdf5(raw_file, name, args.assembly, user_hdf5, args.bin)
-        elif datatype.lower() == "bedgraph":
-            bg_to_hdf5(raw_file, name, args.assembly, user_hdf5, args.bin)
-        elif datatype.lower() == "wig":
-            tmp_file = tmp_name()
-            wig_to_bigwig(raw_file, tmp_file)
-            bw_to_hdf5(tmp_file, name, args.assembly, user_hdf5, args.bin)
-        else:
-            print "Could not determine type for {0}".format(name)
-            continue
-        filter_hdf5(name, args.assembly, user_hdf5, user_filtered_hdf5, args.bin, include_path, exclude_path)
-        if args.metric == "spearman":
-          rank_hdf5(user_filtered_hdf5)
+        # convert user bigwigs to hdf5 and filter it
+        for raw_file, datatype, name, user_hdf5, user_filtered_hdf5 in user_input_list:
+            if datatype.lower() == "bigwig":
+                bw_to_hdf5(raw_file, name, args.assembly, user_hdf5, args.bin)
+            elif datatype.lower() == "bedgraph":
+                bg_to_hdf5(raw_file, name, args.assembly, user_hdf5, args.bin)
+            elif datatype.lower() == "wig":
+                tmp_file = tmp_name()
+                wig_to_bigwig(raw_file, tmp_file)
+                bw_to_hdf5(tmp_file, name, args.assembly, user_hdf5, args.bin)
+            else:
+                print "Could not determine type for {0}".format(name)
+                continue
+            filter_hdf5(name, args.assembly, user_hdf5, user_filtered_hdf5, args.bin, include_path, exclude_path)
+            if args.metric == "spearman":
+              rank_hdf5(user_filtered_hdf5)
 
-    #correlate all uncorrelated matrix cells
-    correlate(input_list_path, args.assembly, correlation_file, args.bin)
+        #correlate all uncorrelated matrix cells
+        correlate(input_list_path, args.assembly, correlation_file, args.bin)
 
-    #generate the final matrix
-    make_matrix(input_list_path, correlation_file, args.output, args.md5s)
+        #generate the final matrix
+        make_matrix(input_list_path, correlation_file, args.output, args.md5s)
 
 if __name__ == '__main__':
     main()
