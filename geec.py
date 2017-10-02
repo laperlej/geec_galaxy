@@ -164,10 +164,10 @@ def can_slice_matrix(md5s, files, assembly, resolution, include, exclude, metric
 
 def slice_matrix(md5s, assembly, resolution, include, exclude, output):
     """
-    python geec_slice_md5sum.py matrix.mat md5_1 md5_2 md5_N > output.mat
+    python geec_slice_file_name.py matrix.mat fn_1 fn_2 fn_N > output.mat
     """
     arguments = ['python',
-                 config.GEEC_SLICE_MD5SUM,
+                 config.GEEC_SLICE_FILE_NAME,
                  config.get_matrix(assembly, resolution, include, exclude)]
     arguments += md5s
 

@@ -1,5 +1,5 @@
 <tool id="geec_slice_matrix" name="GeEC Slice Matrix">
-  <description>[v0.9]</description>
+  <description>[v0.10]</description>
   <command interpreter="python">
     geec_slice.py
     $matrix
