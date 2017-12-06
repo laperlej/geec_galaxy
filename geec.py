@@ -162,6 +162,40 @@ def can_slice_matrix(md5s, files, assembly, resolution, include, exclude, metric
             return True
     return False
 
+def is_nm(md5s, files):
+    # verify if nm
+    return bool(md5s and files and metric == "pearson")
+
+def correlate_nm(input_list1, input_list2, assembly, correlation_file, resolution):
+    """Usage: correlation_nm {input_list1}
+                             {input_list2}
+                             {chrom_sizes}
+                             {output.results}
+                             {bin_size}\n");"""
+    subprocess.call([config.CORRELATION_NM,
+                     input_list1,
+                     input_list2,
+                     config.get_chrom_sizes(assembly),
+                     correlation_file,
+                     resolution
+                     ])
+
+def make_matrix_nm(input_list1, input_list2, correlation_file, precalc_matrix, output_matrix, meta_json = ""):
+    """
+    python make_matrix.py {list_path} {chrom_size} {corr_path} {output_path}
+    """
+    arguments = ['python',
+                 config.MAKE_MATRIX_NM,
+                 input_list1,
+                 input_list2,
+                 correlation_file,
+                 precalc_matrix,
+                 output_matrix
+                 ]
+    if meta_json:
+        arguments += [meta_json]
+    subprocess.call(arguments)
+
 def slice_matrix(md5s, assembly, resolution, include, exclude, output):
     """
     python geec_slice_md5sum.py matrix.mat md5_1 md5_2 md5_N > output.mat
@@ -279,7 +313,8 @@ def main():
         include_path = config.get_region(args.assembly, args.include)
         exclude_path = config.get_region(args.assembly, args.exclude)
         #create temporary input files for geec executables
-        input_list = []
+        input_list1 = []
+        input_list2 = []
 
         user_input_list = []
         for file, datatype, label in itertools.izip(args.files, args.types, args.labels):
@@ -287,17 +322,16 @@ def main():
             user_filtered_hdf5 = tmp_name()
             label = label.split("/")[-1]
             user_input_list.append((file, datatype, label, user_hdf5, user_filtered_hdf5))
-            input_list.append((user_filtered_hdf5, label))
+            input_list1.append((user_filtered_hdf5, label))
 
         for md5 in md5s:
             hdf5_path = config.get_hdf5(md5, args.assembly, args.bin, args.include, args.exclude, args.metric)
             if os.path.isfile(hdf5_path):
-                input_list.append((hdf5_path, md5))
+                input_list2.append((hdf5_path, md5))
             else:
                 print "{0} is missing".format(md5_json["datasets"][md5].get("file_name", "unknown"))
 
         correlation_file = tmp_name()
-        input_list_path = create_input_list(input_list)
 
         # convert user bigwigs to hdf5 and filter it
         for raw_file, datatype, name, user_hdf5, user_filtered_hdf5 in user_input_list:
@@ -316,11 +350,22 @@ def main():
             if args.metric == "spearman":
               rank_hdf5(user_filtered_hdf5)
 
-        #correlate all uncorrelated matrix cells
-        correlate(input_list_path, args.assembly, correlation_file, args.bin)
+        if is_nm(md5s, args.files):
+            input_list_path1 = create_input_list(input_list1)
+            input_list_path2 = create_input_list(input_list2)
+            #correlate all uncorrelated matrix cells
+            correlate_nm(input_list_path1, input_list_path2, args.assembly, correlation_file, args.bin)
 
-        #generate the final matrix
-        make_matrix(input_list_path, correlation_file, args.output, args.md5s)
+            #generate the final matrix
+            precalc_matrix = config.get_matrix(args.assembly, args.bin, include_path, exclude_path)
+            make_matrix_nm(input_list_path1, input_list_path2, correlation_file, precalc_matrix, args.output, args.md5s)
+        else:
+            input_list_path = create_input_list(input_list1 + input_list2)
+            #correlate all uncorrelated matrix cells
+            correlate(input_list_path, args.assembly, correlation_file, args.bin)
+
+            #generate the final matrix
+            make_matrix(input_list_path, correlation_file, args.output, args.md5s)
 
 if __name__ == '__main__':
     main()
