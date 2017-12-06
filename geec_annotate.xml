@@ -1,5 +1,5 @@
 <tool id="geec_annotate" name="GeEC Annotate">
-  <description>[v0.9]</description>
+  <description>[v0.10]</description>
   <command interpreter="python">
     geec_annotate.py
     #if $nb_clusters_cond.nb_clusters_specified:

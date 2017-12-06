@@ -1,5 +1,5 @@
 <tool id="geec_ari" name="GeEC ARI">
-  <description>[v0.9]</description>
+  <description>[v0.10]</description>
   <command interpreter="python">
     geec_ari.py
     $matrix
