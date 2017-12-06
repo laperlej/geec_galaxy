@@ -357,7 +357,7 @@ def main():
             correlate_nm(input_list_path1, input_list_path2, args.assembly, correlation_file, args.bin)
 
             #generate the final matrix
-            precalc_matrix = config.get_matrix(args.assembly, args.bin, include_path, exclude_path)
+            precalc_matrix = config.get_matrix(args.assembly, args.bin, args.include, args.exclude)
             make_matrix_nm(input_list_path1, input_list_path2, correlation_file, precalc_matrix, args.output, args.md5s)
         else:
             input_list_path = create_input_list(input_list1 + input_list2)
