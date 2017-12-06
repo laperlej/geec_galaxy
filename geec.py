@@ -162,7 +162,7 @@ def can_slice_matrix(md5s, files, assembly, resolution, include, exclude, metric
             return True
     return False
 
-def is_nm(md5s, files):
+def is_nm(md5s, files, metric):
     # verify if nm
     return bool(md5s and files and metric == "pearson")
 
@@ -350,7 +350,7 @@ def main():
             if args.metric == "spearman":
               rank_hdf5(user_filtered_hdf5)
 
-        if is_nm(md5s, args.files):
+        if is_nm(md5s, args.files args.metric):
             input_list_path1 = create_input_list(input_list1)
             input_list_path2 = create_input_list(input_list2)
             #correlate all uncorrelated matrix cells
