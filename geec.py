@@ -218,8 +218,8 @@ def rank_hdf5(hdf5_path):
     md5 = group
   for dset in h5f[md5]:
     data = h5f[md5][dset]
-    assert(n < 3024616) #overflow on int64
     n = len(data)
+    assert(n < 3024616) #overflow on int64
     data[...] = scipy.stats.rankdata(data, method="ordinal")
     data.attrs['sumX'] = n * (n + 1) / 2 #sum of natural numbers
     data.attrs['sumXX'] = n * (n + 1) * (2 * n + 1) / 6 #sum of perfect squares
