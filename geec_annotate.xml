@@ -1,5 +1,5 @@
-<tool id="geec_annotate" name="GeEC Annotate">
-  <description>[v0.10]</description>
+<tool id="geec_annotate" name="epiGeEC Annotate Matrix">
+  <description></description>
   <command interpreter="python">
     geec_annotate.py
     #if $nb_clusters_cond.nb_clusters_specified:
@@ -15,7 +15,7 @@
       $rmat
     #end if
     --title
-    GeEC-annotate\ of\ $public_metadata.name,\ k=%\(nb_clusters\)\ clusters
+    epiGeEC\ Annotate\ Matrix\ of\ $public_metadata.name,\ k=%\(nb_clusters\)\ clusters
     #if $scatter_plot.do_scatter_plot and $scatter_plot.seed:
       --seed ${scatter_plot.seed}
     #end if
@@ -85,11 +85,9 @@
   <help>
 **What it does**
 
-GeEC Annotate takes as input the matrix from “GeEC Matrix” as well as the metadata used to generate the matrix, to create a heatmap with its dendrogram as well as a multidimensional scaling representation. It is also performing a hierarchical clustering of the datasets (using for now the distance 1-r (r being the Pearson coefficient correlation present in the matrix) and the average linkage), then cut the dendrogram to generate k clusters that are annotated as pie charts with the provided metadata. All the datasets of the matrix absent from the metadata json file are considered as private datasets and therefore identified “users” in the annotations.
+epiGeEC Annotate takes as input the matrix from epiGeEC Correlation Matrix and the metadata used to generate the matrix, to create a heatmap representation with its dendrogram as well as a multidimensional scaling representation. It is also performing a hierarchical clustering of the datasets (using “1-r” as the distance measure (r being the Pearson coefficient correlation present in the matrix)), then cut the dendrogram to generate k clusters that are annotated as pie charts with the provided metadata. All the datasets of the matrix absent from the metadata json file are considered as private datasets and therefore identified “user” in the annotations.
 
-The output of GeEC Annotate is a pdf file containing all the graphical representations of the correlation matrix.
-
-Output: pdf
+The output of epiGeEC Annotate Matrix is a pdf file containing all the graphical representations of the correlation matrix as well as a tsv containing the metadata of each clustered datasets, and optionally a reordered version of the correlation matrix.
   </help>
 
 </tool>

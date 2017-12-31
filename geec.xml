@@ -1,5 +1,5 @@
-<tool id="geec" name="GeEC Matrix">
-  <description>creates a correlation matrix between many datasets [v0.5]</description>
+<tool id="geec" name="epiGeEC Correlation Matrix">
+  <description></description>
   <command interpreter="python">
     geec.py
     --files
@@ -120,13 +120,11 @@
 <help>
 **What it does**
 
+epiGeEC Correlation Matrix computes a correlation matrix between many datasets at the given resolution. Thousands of pre-computed datasets are available from the epiGeEC Public Dataset Selection tool by importing to the Galaxy history a json file containing the metadata of the selected public datasets. The large public datasets are therefore not transferred to the user’s history.
 
-GeEC Matrix takes as input a json file from the "GeEC Public Datasets" tool. Those files contain the metadata of the selected public datasets, including their md5sum. The list of md5sum is used to reach the pre-calculated internal hdf5 files of the public datasets (generated at the given resolution, with the appropriate selection and exclusion filters, and using the selected metric). The large public datasets are therefore not transferred to the user’s history.
+A user can also select signal datasets (BigWig, WIG, BedGraph) from his history, which will then be processed based on the selected options, then compared to the public datasets. It is actually possible to run epiGeEC Correlation Matrix strictly on private datasets (without public datasets). The assembly option is used to select the appropriate chromSizes file to generate intermediate HDF5 files. The output of epiGeEC Correlation Matrix is a tsv file containing the correlation matrix calculated on the canonical chromosomes.
 
-A user can also select datasets from his history, which will then be processed based on the selected options, then compared to the public datasets. It is actually possible to run GeEC Matrix strictly on private datasets (without public datasets). The assembly option is used to select the appropriate chromSizes file to internally generate the hdf5 files. 
-The output of GeEC Matrix is a tsv file containing the correlation matrix calculated on the canonical chromosomes and using a concatenation of the filename and the md5sum as column/line identifiers.
-
-It is recommended to next use “GeEC Annotate” to create a heatmap with its dendrogram as well as a multidimensional scaling representation of the matrix, and even to cluster the datasets and annotate these clusters with the provided metadata.
+It is recommended to next use epiGeEC Annotate Matrix to create an annotated heatmap with its dendrogram and corresponding pie charts based on the provided metadata, as well as a multidimensional scaling representation of the matrix.
 </help>
 
 </tool>

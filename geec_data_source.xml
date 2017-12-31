@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<tool id="geec_data_source" name="GeEC Public Datasets" tool_type="data_source">
+<tool id="geec_data_source" name="epiGeEC Public Dataset Selection" tool_type="data_source">
   <description></description>
   <!--$__app__.config.output_size_limit-->
   <command interpreter="python"> data_source.py $output $__app__.config.output_size_limit</command>

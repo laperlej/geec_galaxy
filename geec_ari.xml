@@ -1,5 +1,5 @@
-<tool id="geec_ari" name="GeEC ARI">
-  <description>[v0.10]</description>
+<tool id="geec_ari" name="epiGeEC Evaluate Clustering">
+  <description></description>
   <command interpreter="python">
     geec_ari.py
     $matrix
@@ -56,8 +56,9 @@
   <help>
 **What it does**
 
-The output of GeEC ARI is a tabular file containing two tables. The first contains the ARI values (between ~0 and 1) for each selected label category as column, and optionally a breakdown of some label categories (e.g. the breakdown of the « assay » label category will calculate ARI values individually for RNA-seq, H3K4me3, …). The second table contains the number of different labels for each category.
+epiGeEC Evaluate Clustering takes as input approximately the same parameters as epiGeEC Annotate Matrix to calculate the Adjusted Rand Index (ARI, values between ~0 and 1) providing a quantitative evaluation of the clustering performed by epiGeEC Annotate Matrix (in other words how well the clustering corresponds to the expected structure based on the metadata). It is particularly useful to compare different sets of paramaters.
 
+The output of epiGeEC Evaluate Clustering is a tsv containing two tables. The first contains the ARI values for each selected label category as column, and optionally a breakdown of some label categories (e.g. the breakdown of the « assay » label category will calculate ARI values individually for RNA-seq, H3K4me3, …). The second table contains the number of different labels for each category.
   </help>
 
 </tool>
