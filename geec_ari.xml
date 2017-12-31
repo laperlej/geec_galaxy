@@ -24,9 +24,9 @@
     <requirement type="package" version="0.1.0">geec</requirement>
   </requirements>
   <inputs>
-    <param format="tabular" name="matrix" type="data" label="Matrix file" optional="false" multiple="false" help="Select a matrix coming from &quot;GeEC Matrix&quot;."/>
+    <param format="tabular" name="matrix" type="data" label="Matrix file" optional="false" multiple="false" help="Select a matrix coming from &quot;epiGeEC Correlation Matrix&quot;."/>
 
-    <param format="Json" name="public_metadata" type="data" label="Public metadata file" optional="false" multiple="false" help="Select a JSON file containing public dataset IDs and their metadata, coming from the &quot;GeEC Public Datasets&quot; selection tool."/>
+    <param format="Json" name="public_metadata" type="data" label="Public metadata file" optional="false" multiple="false" help="Select a JSON file containing public dataset IDs and their metadata, coming from the &quot;epiGeEC Public Dataset Selection&quot; selection tool."/>
 
     <!-- <param format="Json" name="private_metadata" type="data" label="Private metadata file (optional)" optional="true" multiple="false" help="Select a JSON file containing user dataset names and their metadata."/> -->
 
