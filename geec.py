@@ -343,7 +343,7 @@ def main():
         p = multiprocessing.Pool(10)
         p_args = []
         for raw_file, datatype, name, user_hdf5, user_filtered_hdf5 in user_input_list:
-            p_args.append(args, datatype, raw_file, name, user_hdf5, user_filtered_hdf5, include_path, exclude_path)
+            p_args.append((args, datatype, raw_file, name, user_hdf5, user_filtered_hdf5, include_path, exclude_path))
         p.map(to_hdf5, p_args)
 
     if is_nm(md5s, args.files, args.metric):
