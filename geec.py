@@ -344,9 +344,7 @@ def main():
         p_args = []
         for raw_file, datatype, name, user_hdf5, user_filtered_hdf5 in user_input_list:
             p_args.append((args, datatype, raw_file, name, user_hdf5, user_filtered_hdf5, include_path, exclude_path))
-        p.apply_async(to_hdf5, p_args)
-        p.close()
-        p.join()
+        p.map(to_hdf5, p_args)
 
     if is_nm(md5s, args.files, args.metric):
         input_list_path1 = create_input_list(input_list1)
