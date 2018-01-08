@@ -8,11 +8,28 @@ import json
 import os.path
 import h5py
 import scipy.stats
+import multiprocessing
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'geec_tools/python/utils'))
 import config
 
 PUBLIC_DATA_ROOT = "/home/laperlej/geec/public"
+
+def to_hdf5(args, datatype, raw_file, name, user_hdf5, user_filtered_hdf5, include_path, exclude_path):
+    if datatype.lower() == "bigwig":
+        bw_to_hdf5(raw_file, name, args.assembly, user_hdf5, args.bin)
+    elif datatype.lower() == "bedgraph":
+        bg_to_hdf5(raw_file, name, args.assembly, user_hdf5, args.bin)
+    elif datatype.lower() == "wig":
+        tmp_file = tmp_name()
+        wig_to_bigwig(raw_file, tmp_file)
+        bw_to_hdf5(tmp_file, name, args.assembly, user_hdf5, args.bin)
+    else:
+        print "Could not determine type for {0}".format(name)
+        continue
+    filter_hdf5(name, args.assembly, user_hdf5, user_filtered_hdf5, args.bin, include_path, exclude_path)
+    if args.metric == "spearman":
+        rank_hdf5(user_filtered_hdf5)
 
 class Wig(object):
     def __init__(self, wigfile):
@@ -321,21 +338,13 @@ def main():
     correlation_file = tmp_name()
 
     # convert user bigwigs to hdf5 and filter it
-    for raw_file, datatype, name, user_hdf5, user_filtered_hdf5 in user_input_list:
-        if datatype.lower() == "bigwig":
-            bw_to_hdf5(raw_file, name, args.assembly, user_hdf5, args.bin)
-        elif datatype.lower() == "bedgraph":
-            bg_to_hdf5(raw_file, name, args.assembly, user_hdf5, args.bin)
-        elif datatype.lower() == "wig":
-            tmp_file = tmp_name()
-            wig_to_bigwig(raw_file, tmp_file)
-            bw_to_hdf5(tmp_file, name, args.assembly, user_hdf5, args.bin)
-        else:
-            print "Could not determine type for {0}".format(name)
-            continue
-        filter_hdf5(name, args.assembly, user_hdf5, user_filtered_hdf5, args.bin, include_path, exclude_path)
-        if args.metric == "spearman":
-            rank_hdf5(user_filtered_hdf5)
+    if user_input_list:
+        p = multiprocessing.Pool(10)
+        args = []
+        for raw_file, datatype, name, user_hdf5, user_filtered_hdf5 in user_input_list:
+            args.append((args, datatype, raw_file, name, user_hdf5, user_filtered_hdf5, include_path, exclude_path))
+        p.apply_async(to_hdf5, args)
+        p.join()
 
     if is_nm(md5s, args.files, args.metric):
         input_list_path1 = create_input_list(input_list1)
