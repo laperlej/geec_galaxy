@@ -26,7 +26,8 @@ def to_hdf5(args, datatype, raw_file, name, user_hdf5, user_filtered_hdf5, inclu
         bw_to_hdf5(tmp_file, name, args.assembly, user_hdf5, args.bin)
     else:
         print "Could not determine type for {0}".format(name)
-        continue
+        #continue
+        return
     filter_hdf5(name, args.assembly, user_hdf5, user_filtered_hdf5, args.bin, include_path, exclude_path)
     if args.metric == "spearman":
         rank_hdf5(user_filtered_hdf5)
