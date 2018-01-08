@@ -140,7 +140,7 @@
 
       <when value="saccer3">
         <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying next parameters">
-          <option value="100">100pb</option>
+          <option value="100">100bp</option>
           <option value="1000" selected="true">1kb</option>
           <option value="10000">10kb</option>
         </param>
