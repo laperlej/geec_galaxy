@@ -17,9 +17,9 @@
     --md5s
     $ihecdata
     --include
-    $cond.include
+    $cond.cond_inc.include
     --exclude
-    $cond.exclude
+    $cond.cond_inc.exclude
     --bin
     $cond.resolution
     --output
@@ -42,67 +42,120 @@
         <option value="hg19" selected="true">hg19</option>
         <option value="hg38">hg38</option>
         <option value="mm10">mm10</option>
+        <option value="saccer3">sacCer3</option>
       </param>
 
       <when value="hg19">
         <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying next parameters">
-          <option value="1000">1000</option>
-          <option value="10000" selected="true">10000</option>
+          <option value="1000" selected="true">1kb</option>
+          <option value="10000">10kb</option>
+          <option value="100000">100kb</option>
+          <option value="1000000">1mb</option>
         </param>
 
-        <param name="include" type="select" label="Selection regions" help="The comparison will only involve bins overlapping these regions">
-          <option value="all" selected="true">Whole genome</option>
-        </param>
+        <conditional name="cond_inc">
+          <param name="include" type="select" label="Selection regions" help="The comparison will only involve bins overlapping these regions">
+            <option value="all" selected="true">Whole genome</option>
+            <option value="gene">Genes</option>
+            <option value="tss">TSS</option>
+          </param>
 
-        <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
-          <option value="blklst" selected="true">Blacklisted</option>
-          <option value="none">None</option>
-        </param>
+          <when value="all">
+            <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
+              <option value="blklst" selected="true">Blacklisted</option>
+              <option value="none">None</option>
+            </param>
+          </when>
+
+          <when value="gene">
+            <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
+              <option value="blklst" selected="true">Blacklisted</option>
+            </param>
+          </when>
+
+          <when value="tss">
+            <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
+              <option value="blklst" selected="true">Blacklisted</option>
+            </param>
+          </when>
+        </conditional>
       </when>
 
       <when value="hg38">
         <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying next parameters">
-          <option value="1000">1000</option>
-          <option value="10000" selected="true">10000</option>
+          <option value="1000" selected="true">1kb</option>
+          <option value="10000">10kb</option>
+          <option value="100000">100kb</option>
+          <option value="1000000">1mb</option>
         </param>
 
-        <param name="include" type="select" label="Selection regions" help="The comparison will only involve bins overlapping these regions">
-          <option value="all" selected="true">Whole genome</option>
-        </param>
+        <conditional name="cond_inc">
+          <param name="include" type="select" label="Selection regions" help="The comparison will only involve bins overlapping these regions">
+            <option value="all" selected="true">Whole genome</option>
+            <option value="gene">Genes</option>
+            <option value="tss">TSS</option>
+          </param>
 
-        <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
-          <option value="none" selected="true">None</option>
-        </param>
+          <when value="all">
+            <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
+              <option value="none" selected="true">None</option>
+            </param>
+          </when>
+
+          <when value="gene">
+            <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
+              <option value="none" selected="true">None</option>
+            </param>
+          </when>
+
+          <when value="tss">
+            <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
+              <option value="none" selected="true">None</option>
+            </param>
+          </when>
+        </conditional>
       </when>
 
       <when value="mm10">
         <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying next parameters">
-          <option value="1000">1000</option>
-          <option value="10000" selected="true">10000</option>
+          <option value="1000" selected="true">1kb</option>
+          <option value="10000">10kb</option>
+          <option value="100000">100kb</option>
+          <option value="1000000">1mb</option>
         </param>
 
-        <param name="include" type="select" label="Selection regions" help="The comparison will only involve bins overlapping these regions">
-          <option value="all" selected="true">Whole genome</option>
-        </param>
+        <conditional name="cond_inc">
+          <param name="include" type="select" label="Selection regions" help="The comparison will only involve bins overlapping these regions">
+            <option value="all" selected="true">Whole genome</option>
+          </param>
 
-        <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
-          <option value="blklst" selected="true">Blacklisted</option>
-          <option value="none">None</option>
-        </param>
+          <when value="all">
+            <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
+              <option value="blklst" selected="true">Blacklisted</option>
+              <option value="none">None</option>
+            </param>
+          </when>
+        </conditional>
       </when>
 
-      <when value="sacCer3">
+      <when value="saccer3">
         <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying next parameters">
-          <option value="1000" selected="true">1000</option>
+          <option value="100">100pb</option>
+          <option value="1000" selected="true">1kb</option>
+          <option value="10000">10kb</option>
         </param>
 
-        <param name="include" type="select" label="Selection regions" help="The comparison will only involve bins overlapping these regions">
-          <option value="all" selected="true">Whole genome</option>
-        </param>
+        <conditional name="cond_inc">
+          <param name="include" type="select" label="Selection regions" help="The comparison will only involve bins overlapping these regions">
+            <option value="all" selected="true">Whole genome</option>
+          </param>
 
-        <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
-          <option value="none" selected="true">None</option>
-        </param>
+          <when value="all">
+            <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
+              <option value="none" selected="true">None</option>
+            </param>
+          </when>
+        </conditional>
       </when>
 
     </conditional>
