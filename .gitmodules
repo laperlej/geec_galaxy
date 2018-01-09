@@ -1,0 +1,4 @@
+[submodule "geec_tools"]
+	path = geec_tools
+	url = https://github.com/laperlej/geec_tools.git
+	branch = submod
