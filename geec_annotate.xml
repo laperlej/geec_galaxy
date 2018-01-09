@@ -76,9 +76,9 @@
 
   </inputs>
   <outputs>
-    <data format="pdf" name="pdf" label="GeEC Annotate k=$nb_clusters_cond.nb_clusters PDF on ${on_string}"/>
-    <data format="tabular" name="tsv" label="GeEC Annotate k=$nb_clusters_cond.nb_clusters TSV on ${on_string}"/>
-    <data format="tabular" name="rmat" label="GeEC reordered Matrix on ${on_string}">
+    <data format="pdf" name="pdf" label="epiGeEC Annotate k=$nb_clusters_cond.nb_clusters PDF on ${on_string}"/>
+    <data format="tabular" name="tsv" label="epiGeEC Annotate k=$nb_clusters_cond.nb_clusters TSV on ${on_string}"/>
+    <data format="tabular" name="rmat" label="epiGeEC reordered Matrix on ${on_string}">
       <filter>doReorderedMatrix</filter>
     </data>
   </outputs>
