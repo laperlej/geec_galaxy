@@ -1,0 +1,30 @@
+<tool id="geec_slice_matrix" name="GeEC Slice Matrix">
+  <description></description>
+  <command interpreter="python">
+    geec_slice.py
+    $matrix
+    $tsv
+    $clusters_list 
+    > $output
+  </command>
+  <requirements>
+    <requirement type="package" version="0.1.0">geec</requirement>
+  </requirements>
+  <inputs>
+    <param format="tabular" name="matrix" type="data" label="Matrix file" optional="false" multiple="false" help="Select a matrix coming from &quot;GeEC Matrix&quot;."/>
+
+    <param format="tabular" name="tsv" type="data" label="GeEC Annotate tsv file" optional="false" multiple="false" help="Select a tabular file coming from &quot;GeEC Annotate&quot;."/>
+
+    <param name="clusters_list" type="text" label="List of cluster names" help="Enter the cluster names to keep (e.g. A-E,H)."/>
+
+  </inputs>
+  <outputs>
+    <data format="tabular" name="output" />
+  </outputs>
+  <help>
+**What it does**
+
+This tool cut the matrix to keep only the elements contained in the selected clusters.
+  </help>
+
+</tool>
