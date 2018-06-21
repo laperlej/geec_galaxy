@@ -86,10 +86,7 @@ def get_hdf5(md5, assembly, resolution, include, exclude, metric="pearson"):
 def to_hdf5(params):
     args, datatype, raw_file, name, user_hdf5, user_filtered_hdf5, include_path, exclude_path = params
     if datatype.lower() == "bigwig":
-        print("hello1")
         bw_to_hdf5(raw_file, name, args.assembly, user_hdf5, args.bin)
-        print("hello2")
-        return
     elif datatype.lower() == "bedgraph":
         bg_to_hdf5(raw_file, name, args.assembly, user_hdf5, args.bin)
     elif datatype.lower() == "wig":
@@ -100,6 +97,8 @@ def to_hdf5(params):
         print "Could not determine type for {0}".format(name)
         #continue
         return
+    print("hello1")
+    return
     filter_hdf5(name, args.assembly, user_hdf5, user_filtered_hdf5, include_path, exclude_path)
     if args.metric == "spearman":
         rank_hdf5(user_filtered_hdf5)
