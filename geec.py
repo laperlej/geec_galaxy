@@ -351,7 +351,6 @@ def main():
         p.map(to_hdf5, p_args)
 
     if is_precalc(md5s, args.files, args.metric):
-        print("a")
         input_list_path1 = create_input_list(input_list1)
         input_list_path2 = create_input_list(input_list2)
         #correlate all uncorrelated matrix cells
@@ -364,11 +363,10 @@ def main():
             precalc_matrix = get_matrix(args.assembly, args.bin, args.include, args.exclude)
             make_matrix_nm(mat_file_nn, mat_file_nm, precalc_matrix, args.output, args.md5s)
         else:
-            print("b")
             input_list_path2 = create_input_list(input_list2)
             precalc_matrix = get_matrix(args.assembly, args.bin, args.include, args.exclude)
             slice_matrix(args.md5s, args.assembly, args.bin, args.include, args.exclude, mat_file_nn)
-            make_matrix(mat_file_nn, args.output, args.md5s)
+            launch_make_matrix(mat_file_nn, args.output, args.md5s)
     else:
         input_list_path = create_input_list(input_list1 + input_list2)
         #correlate all uncorrelated matrix cells
