@@ -369,13 +369,13 @@ def main():
         else:
             input_list_path2 = create_input_list(input_list2)
             slice_matrix([x[1] for x in input_list2], args.assembly, args.bin, args.include, args.exclude, mat_file_nn)
+            print(mat_file_nn, args.output, args.md5s)
             launch_make_matrix(mat_file_nn, args.output, args.md5s)
     else:
         input_list_path = create_input_list(input_list1 + input_list2)
         #correlate all uncorrelated matrix cells
         correlate(input_list_path, args.assembly, mat_file_nn)
         #generate the final matrix
-        print(mat_file_nn, args.output, args.md5s)
         launch_make_matrix(mat_file_nn, args.output, args.md5s)
     #matrix_content = open(mat_file_nn).read()
     #for oldname, newname in :
