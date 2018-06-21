@@ -221,6 +221,7 @@ def slice_matrix(md5s, assembly, resolution, include, exclude, output):
     """
     python geec_slice_file_name.py matrix.mat fn_1 fn_2 fn_N > output.mat
     """
+    """
     arguments = ['python',
                  GEEC_SLICE_FILE_NAME,
                  get_matrix(assembly, resolution, include, exclude)]
@@ -228,6 +229,12 @@ def slice_matrix(md5s, assembly, resolution, include, exclude, output):
     print(arguments)
     with open(output, 'w') as output_file:
         subprocess.call(arguments, stdout=output_file)
+    """
+    arguments = ['python',
+                 GEEC_SLICE_FILE_NAME,
+                 get_matrix(assembly, resolution, include, exclude)]
+    arguments += md5s
+    geec_slice_file_name.main(arguments)
 
 def rank_hdf5(hdf5_path):
   h5f = h5py.File(hdf5_path, 'r+')
