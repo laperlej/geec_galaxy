@@ -1,3 +1,4 @@
+export TCL_LIBRARY=/usr/share/tcl8.5
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/cvmfs/opt.usherbrooke.ca/CentOS6/szip/2.1/lib/
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/cvmfs/opt.usherbrooke.ca/intel/composerxe-2011.5.220/mkl/lib/intel64
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/cvmfs/opt.usherbrooke.ca/intel/composerxe-2011.5.220/compiler/lib/intel64
