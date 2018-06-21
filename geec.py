@@ -20,8 +20,9 @@ PUBLIC_DATA_ROOT = "/geec-data/public"
 import os.path
 
 #directories
-RESOURCE_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__), "epigeec", "epigeec", "resource"))
+RESOURCE_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), "epigeec", "epigeec", "resource")
 WIG_TO_BW = os.path.join(os.path.dirname(os.path.realpath(__file__)), "bin", "wigToBigWig")
+MODULE_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), "geec_tools")
 
 def analysis_path(script_name):
     return os.path.join(os.path.dirname(MODULE_DIR), 'geec_analysis', script_name)
