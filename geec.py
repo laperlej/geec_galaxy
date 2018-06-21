@@ -97,12 +97,9 @@ def to_hdf5(params):
         print "Could not determine type for {0}".format(name)
         #continue
         return
-    print("hello1")
     filter_hdf5(name, args.assembly, user_hdf5, user_filtered_hdf5, include_path, exclude_path)
-    print("hello2")
     if args.metric == "spearman":
         rank_hdf5(user_filtered_hdf5)
-    return
 
 class Wig(object):
     def __init__(self, wigfile):
