@@ -14,6 +14,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), 'ep
 import main as epimain
 import launcher
 import make_matrix
+print(epimain.__file__)
+print(make_matrix.__file__)
 
 PUBLIC_DATA_ROOT = "/geec-data/public"
 
@@ -224,9 +226,6 @@ def slice_matrix(md5s, assembly, resolution, include, exclude, output):
         subprocess.call(arguments, stdout=output_file)
 
 def launch_make_matrix(nn_mat_file, output_matrix, meta_json = ""):
-    """
-    python make_matrix.py {list_path} {chrom_size} {corr_path} {output_path}
-    """
     args = [nn_mat_file, output_matrix]
     if meta_json:
         args += [meta_json]
