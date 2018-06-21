@@ -10,7 +10,7 @@ import h5py
 import scipy.stats
 import multiprocessing
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'epigeec/epigeec/python/core'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), 'epigeec/epigeec/python/core'))
 import main as epimain
 import launcher
 import make_matrix
@@ -21,7 +21,7 @@ import os.path
 
 #directories
 RESOURCE_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__), "epigeec", "epigeec", "resource"))
-WIG_TO_BW = os.path.join(os.path.dirname(os.path.realpath(__file__), "bin", "wigToBigWig"))
+WIG_TO_BW = os.path.join(os.path.dirname(os.path.realpath(__file__)), "bin", "wigToBigWig")
 
 def analysis_path(script_name):
     return os.path.join(os.path.dirname(MODULE_DIR), 'geec_analysis', script_name)
