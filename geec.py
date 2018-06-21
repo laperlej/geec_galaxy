@@ -197,12 +197,12 @@ def is_precalc(md5s, files, metric):
     # verify if nm
     return bool(md5s and metric == "pearson")
 
-def correlate(input_list, assembly, mat_file):
-    args = ["correlate", input_list, get_chrom_sizes(assembly), mat_file]
+def correlate(input_list, assembly, mat_file, desc=""):
+    args = ["correlate", "--desc", desc, input_list, get_chrom_sizes(assembly), mat_file]
     epimain.main(args)
 
-def correlate_nm(input_list1, input_list2, assembly, mat_file):
-    launcher.corr_nm(False, input_list1, input_list2, get_chrom_sizes(assembly), mat_file)
+def correlate_nm(input_list1, input_list2, assembly, mat_file, desc=""):
+    launcher.corr_nm(False, input_list1, input_list2, get_chrom_sizes(assembly), mat_file, desc)
 
 def launch_make_matrix(nn_mat_file, output_matrix, meta_json = ""):
     args = [nn_mat_file, output_matrix]
@@ -309,6 +309,8 @@ def main():
     if args.labels == ['None']:
         args.labels = []
 
+    desc = "{0}_{1}_{2}_{3}_{4}".format(args.bin, args.assembly, args.include, args.exclude, args.metric)
+
     #read md5 list file for public data
     if args.md5s:
       md5_json = json.load(open(args.md5s))
@@ -360,8 +362,8 @@ def main():
         if input_list1:
             input_list_path1 = create_input_list(input_list1)
             input_list_path2 = create_input_list(input_list2)
-            correlate(input_list_path1, args.assembly, mat_file_nn)
-            correlate_nm(input_list_path1, input_list_path2, args.assembly, mat_file_nm)
+            correlate(input_list_path1, args.assembly, mat_file_nn, desc)
+            correlate_nm(input_list_path1, input_list_path2, args.assembly, mat_file_nm, desc)
             #generate the final matrix
             slice_matrix([x[1] for x in input_list2], args.assembly, args.bin, args.include, args.exclude, mat_file_mm)
             make_matrix_nm(mat_file_nn, mat_file_nm, mat_file_mm, args.output, args.md5s)
@@ -372,7 +374,7 @@ def main():
     else:
         input_list_path = create_input_list(input_list1 + input_list2)
         #correlate all uncorrelated matrix cells
-        correlate(input_list_path, args.assembly, mat_file_nn)
+        correlate(input_list_path, args.assembly, mat_file_nn, desc)
         #generate the final matrix
         launch_make_matrix(mat_file_nn, args.output, args.md5s)
     matrix_content = open(args.output).read()
