@@ -84,9 +84,10 @@ def get_hdf5(md5, assembly, resolution, include, exclude, metric="pearson"):
     return hdf5_path_maker(path)
 
 def to_hdf5(params):
-    return
     args, datatype, raw_file, name, user_hdf5, user_filtered_hdf5, include_path, exclude_path = params
     if datatype.lower() == "bigwig":
+        print("hello")
+        return
         bw_to_hdf5(raw_file, name, args.assembly, user_hdf5, args.bin)
     elif datatype.lower() == "bedgraph":
         bg_to_hdf5(raw_file, name, args.assembly, user_hdf5, args.bin)
