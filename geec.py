@@ -194,7 +194,12 @@ def wig_to_bigwig(wig_file, bigwig_file):
 
 
 def filter_hdf5(name, assembly, user_hdf5, filtered_hdf5, include, exclude):
-    args = ["filter", "--select", include, "--exclude", exclude, user_hdf5, get_chrom_sizes(assembly), filtered_hdf5]
+    args = ["filter"]
+    if "all" not in include:
+        args += ["--select", include]
+    if "none" not in exclude:
+        args += ["--exclude", exclude]
+    args += [user_hdf5, get_chrom_sizes(assembly), filtered_hdf5]
     epimain.main(args)
 
 def is_precalc(md5s, files, metric):
