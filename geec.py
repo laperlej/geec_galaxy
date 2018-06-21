@@ -200,7 +200,7 @@ def correlate(input_list, assembly, mat_file):
 
 def is_nm(md5s, files, metric):
     # verify if nm
-    return bool(md5s and files and metric == "pearson")
+    return bool(md5s and metric == "pearson")
 
 def correlate_nm(input_list1, input_list2, assembly, mat_file):
     launcher.corr_nm(False, input_list1, input_list2, get_chrom_sizes(assembly), mat_file)
@@ -369,12 +369,10 @@ def main():
             precalc_matrix = get_matrix(args.assembly, args.bin, args.include, args.exclude)
             slice_matrix(args.md5s, args.assembly, args.bin, args.include, args.exclude, mat_file_nn)
             make_matrix(mat_file_nn, args.output, args.md5s)
-
     else:
         input_list_path = create_input_list(input_list1 + input_list2)
         #correlate all uncorrelated matrix cells
         correlate(input_list_path, args.assembly, mat_file_nn)
-
         #generate the final matrix
         launch_make_matrix(mat_file_nn, args.output, args.md5s)
 
