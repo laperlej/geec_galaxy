@@ -208,6 +208,7 @@ def correlate(input_list, assembly, mat_file):
     epimain.main(args)
 
 def correlate_nm(input_list1, input_list2, assembly, mat_file):
+    print(False, input_list1, input_list2, get_chrom_sizes(assembly), mat_file)
     launcher.corr_nm(False, input_list1, input_list2, get_chrom_sizes(assembly), mat_file)
 
 def launch_make_matrix(nn_mat_file, output_matrix, meta_json = ""):
@@ -367,7 +368,6 @@ def main():
             make_matrix_nm(mat_file_nn, mat_file_nm, mat_file_mm, args.output, args.md5s)
         else:
             input_list_path2 = create_input_list(input_list2)
-            precalc_matrix = get_matrix(args.assembly, args.bin, args.include, args.exclude)
             slice_matrix([x[1] for x in input_list2], args.assembly, args.bin, args.include, args.exclude, mat_file_nn)
             launch_make_matrix(mat_file_nn, args.output, args.md5s)
     else:
