@@ -375,10 +375,10 @@ def main():
         correlate(input_list_path, args.assembly, mat_file_nn)
         #generate the final matrix
         launch_make_matrix(mat_file_nn, args.output, args.md5s)
-    matrix_content = open(mat_file_nn).read()
+    matrix_content = open(args.output).read()
     for oldname, newname in input_list1:
         matrix_content.replace(os.path.basename(oldname), newname)
-    with open(mat_file_nn, 'w') as f:
+    with open(args.output, 'w') as f:
         f.write(matrix_content)
 
 
