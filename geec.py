@@ -11,6 +11,8 @@ import scipy.stats
 import multiprocessing
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), 'epigeec/epigeec/python/core'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), 'geec_tools/geec_analysis'))
+import geec_slice_file_name
 import main as epimain
 import launcher
 import make_matrix
@@ -23,14 +25,6 @@ import os.path
 RESOURCE_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), "epigeec", "epigeec", "resource")
 WIG_TO_BW = os.path.join(os.path.dirname(os.path.realpath(__file__)), "bin", "wigToBigWig")
 MODULE_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), "geec_tools")
-
-def analysis_path(script_name):
-    return os.path.join(MODULE_DIR, 'geec_analysis', script_name)
-
-GEEC_ANNOTATE = analysis_path('geec_annotate.py')
-GEEC_ARI = analysis_path('geec_ari.py')
-GEEC_SLICE = analysis_path('geec_slice.py')
-GEEC_SLICE_FILE_NAME = analysis_path('geec_slice_file_name.py')
 
 #chrom sizes
 def chrom_sizes_path_maker(filename):
