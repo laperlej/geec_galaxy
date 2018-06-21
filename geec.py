@@ -343,6 +343,7 @@ def main():
 
     mat_file_nn = tmp_name()
     mat_file_nm = tmp_name()
+    mat_file_mm = tmp_name()
 
     # convert user bigwigs to hdf5 and filter it
     if user_input_list:
@@ -362,8 +363,8 @@ def main():
             correlate(input_list_path1, args.assembly, mat_file_nn)
             correlate_nm(input_list_path1, input_list_path2, args.assembly, mat_file_nm)
             #generate the final matrix
-            precalc_matrix = get_matrix(args.assembly, args.bin, args.include, args.exclude)
-            make_matrix_nm(mat_file_nn, mat_file_nm, precalc_matrix, args.output, args.md5s)
+            slice_matrix([x[1] for x in input_list2], args.assembly, args.bin, args.include, args.exclude, mat_file_mm)
+            make_matrix_nm(mat_file_nn, mat_file_nm, mat_file_mm, args.output, args.md5s)
         else:
             input_list_path2 = create_input_list(input_list2)
             precalc_matrix = get_matrix(args.assembly, args.bin, args.include, args.exclude)
