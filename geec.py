@@ -232,7 +232,6 @@ def slice_matrix(md5s, assembly, resolution, include, exclude, output):
     arguments += md5s
     print(arguments)
     with open(output, 'w') as output_file:
-        print(arguments)
         subprocess.call(arguments, stdout=output_file)
 
 def rank_hdf5(hdf5_path):
@@ -368,7 +367,7 @@ def main():
         else:
             input_list_path2 = create_input_list(input_list2)
             precalc_matrix = get_matrix(args.assembly, args.bin, args.include, args.exclude)
-            slice_matrix([x[1] for x in input_list2], args.assembly, args.bin, args.include, args.exclude, mat_file_nn)
+            slice_matrix([x[1] for x in input_list2], args.assembly, args.bin, args.include, args.exclude, precalc_matrix)
             launch_make_matrix(mat_file_nn, args.output, args.md5s)
     else:
         input_list_path = create_input_list(input_list1 + input_list2)
