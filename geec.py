@@ -202,6 +202,9 @@ def correlate(input_list, assembly, mat_file):
     epimain.main(args)
 
 def correlate_nm(input_list1, input_list2, assembly, mat_file):
+    print(os.path.exists(input_list1))
+    print(os.path.exists(input_list2))
+    print(os.path.exists(get_chrom_sizes(assembly)))
     print(False, input_list1, input_list2, get_chrom_sizes(assembly), mat_file)
     launcher.corr_nm(False, input_list1, input_list2, get_chrom_sizes(assembly), mat_file)
 
