@@ -97,7 +97,9 @@ def to_hdf5(params):
         print "Could not determine type for {0}".format(name)
         #continue
         return
+    print(user_hdf5)
     filter_hdf5(name, args.assembly, user_hdf5, user_filtered_hdf5, include_path, exclude_path)
+    print(user_filtered_hdf5)
     if args.metric == "spearman":
         rank_hdf5(user_filtered_hdf5)
 
@@ -334,7 +336,6 @@ def main():
 
     for md5 in md5s:
         hdf5_path = get_hdf5(md5, args.assembly, args.bin, args.include, args.exclude, args.metric)
-        print(hdf5_path)
         if os.path.isfile(hdf5_path):
             input_list2.append((hdf5_path, md5))
         else:
