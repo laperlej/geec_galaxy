@@ -360,10 +360,10 @@ def main():
         if input_list1:
             input_list_path1 = create_input_list(input_list1)
             input_list_path2 = create_input_list(input_list2)
-            correlate(input_list_path1, args.assembly, mat_file_mm)
+            correlate(input_list_path1, args.assembly, mat_file_nn)
             correlate_nm(input_list_path1, input_list_path2, args.assembly, mat_file_nm)
             #generate the final matrix
-            slice_matrix([x[1] for x in input_list2], args.assembly, args.bin, args.include, args.exclude, mat_file_nn)
+            slice_matrix([x[1] for x in input_list2], args.assembly, args.bin, args.include, args.exclude, mat_file_mm)
             make_matrix_nm(mat_file_nn, mat_file_nm, mat_file_mm, args.output, args.md5s)
         else:
             input_list_path2 = create_input_list(input_list2)
