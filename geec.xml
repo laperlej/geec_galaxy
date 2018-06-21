@@ -4,7 +4,7 @@
     geec.py
     --files
     #for i in $userData
-      $i
+      "$i"
     #end for
     --types
     #for i in $userData
