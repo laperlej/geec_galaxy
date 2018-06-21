@@ -229,7 +229,7 @@ def slice_matrix(md5s, assembly, resolution, include, exclude, output):
     arguments = ['python',
                  GEEC_SLICE_FILE_NAME,
                  get_matrix(assembly, resolution, include, exclude)]
-    arguments += md5s
+    arguments += md5s.encode('ascii', 'ignore')
     print(arguments)
     with open(output, 'w') as output_file:
         subprocess.call(arguments, stdout=output_file)
@@ -375,6 +375,11 @@ def main():
         correlate(input_list_path, args.assembly, mat_file_nn)
         #generate the final matrix
         launch_make_matrix(mat_file_nn, args.output, args.md5s)
+    matrix_content = open(mat_file_nn).read()
+    for oldname, newname in :
+    with open(mat_file_nn, 'w') as f:
+        f.write(matrix_content)
+
 
 if __name__ == '__main__':
     main()
