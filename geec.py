@@ -316,14 +316,14 @@ def main():
       md5s = []
 
     md5_json = listjson2dictjson(md5_json)
-
+    print("a")
     #public data paths
     include_path = get_filter(args.assembly, args.include)
     exclude_path = get_filter(args.assembly, args.exclude)
     #create temporary input files for geec executables
     input_list1 = []
     input_list2 = []
-
+    print("b")
     user_input_list = []
     for file, datatype, label in itertools.izip(args.files, args.types, args.labels):
         user_hdf5 = tmp_name()
@@ -331,7 +331,7 @@ def main():
         label = label.split("/")[-1]
         user_input_list.append((file, datatype, label, user_hdf5, user_filtered_hdf5))
         input_list1.append((user_filtered_hdf5, label))
-
+    print("c")
     for md5 in md5s:
         hdf5_path = get_hdf5(md5, args.assembly, args.bin, args.include, args.exclude, args.metric)
         if os.path.isfile(hdf5_path):
@@ -341,7 +341,7 @@ def main():
 
     mat_file_nn = tmp_name()
     mat_file_nm = tmp_name()
-
+    print("d")
     # convert user bigwigs to hdf5 and filter it
     if user_input_list:
         p = multiprocessing.Pool(10)
@@ -349,7 +349,7 @@ def main():
         for raw_file, datatype, name, user_hdf5, user_filtered_hdf5 in user_input_list:
             p_args.append((args, datatype, raw_file, name, user_hdf5, user_filtered_hdf5, include_path, exclude_path))
         p.map(to_hdf5, p_args)
-
+    print("e")
     if is_nm(md5s, args.files, args.metric):
         input_list_path1 = create_input_list(input_list1)
         input_list_path2 = create_input_list(input_list2)
@@ -363,7 +363,7 @@ def main():
     else:
         input_list_path = create_input_list(input_list1 + input_list2)
         #correlate all uncorrelated matrix cells
-        print(open(input_list_path).read())
+        print("f")
         correlate(input_list_path, args.assembly, mat_file_nn)
 
         #generate the final matrix
