@@ -14,8 +14,6 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), 'ep
 import main as epimain
 import launcher
 import make_matrix
-print(epimain.__file__)
-print(make_matrix.__file__)
 
 PUBLIC_DATA_ROOT = "/geec-data/public"
 
