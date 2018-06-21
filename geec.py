@@ -102,6 +102,7 @@ def to_hdf5(params):
     print("hello2")
     if args.metric == "spearman":
         rank_hdf5(user_filtered_hdf5)
+    return
 
 class Wig(object):
     def __init__(self, wigfile):
