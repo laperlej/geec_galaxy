@@ -274,6 +274,12 @@ def listjson2dictjson(old_json):
         new_json["datasets"][token["md5sum"]] = token
     return new_json
 
+def prepend(file, s):
+    with open(file, 'r+') as f:
+        content = f.read()
+        f.seek(0, 0)
+        f.write(s)
+
 def main():
     """
     sample input:
@@ -370,6 +376,7 @@ def main():
         else:
             input_list_path2 = create_input_list(input_list2)
             slice_matrix([x[1] for x in input_list2], args.assembly, args.bin, args.include, args.exclude, mat_file_nn)
+            prepend(mat_file_nn, args.desc)
             launch_make_matrix(mat_file_nn, args.output, args.md5s)
     else:
         input_list_path = create_input_list(input_list1 + input_list2)
