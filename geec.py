@@ -341,8 +341,10 @@ def main():
 
     # convert user bigwigs to hdf5 and filter it
     if user_input_list:
-        p = multiprocessing.Pool(10)
+        p = multiprocessing.Pool(1)
         p_args = []
+        print("winner")
+        exit()
         for raw_file, datatype, name, user_hdf5, user_filtered_hdf5 in user_input_list:
             p_args.append((args, datatype, raw_file, name, user_hdf5, user_filtered_hdf5, include_path, exclude_path))
         p.map(to_hdf5, p_args)
