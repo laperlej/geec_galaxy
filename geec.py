@@ -315,7 +315,7 @@ def main():
     if args.labels == ['None']:
         args.labels = []
 
-    desc = "assembly={1}, bin={0}, nbUserDatasets={5}, include={2}, exclude={3}, metric={4}”".format(args.bin, args.assembly, args.include, args.exclude, args.metric, len(args.files))
+    desc = "assembly={1}, bin={0}, nbUserDatasets={5}, include={2}, exclude={3}, metric={4}".format(args.bin, args.assembly, args.include, args.exclude, args.metric, len(args.files))
     #desc = ""
 
     #read md5 list file for public data
