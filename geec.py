@@ -79,7 +79,7 @@ def get_matrix(assembly, resolution, include, exclude, metric="pearson"):
 def get_hdf5(md5, assembly, resolution, include, exclude, metric="pearson"):
     ext = {"pearson":"hdf5",
            "spearman":"rank"}
-    folder = "{1}_{2}_{3}".format(get_resolution(resolution), include, exclude)
+    folder = "{0}_{1}_{2}".format(get_resolution(resolution), include, exclude)
     path = [assembly, folder, "{0}_{1}.{2}".format(md5, folder,ext[metric])]
     return hdf5_path_maker(path)
 
