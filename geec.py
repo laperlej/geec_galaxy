@@ -200,7 +200,7 @@ def correlate(input_list, assembly, mat_file):
 
 def is_precalc(md5s, files, metric):
     # verify if nm
-    return bool(md5s and metric == "pearson")
+    return bool(md5s and metric == "pearson" and False)
 
 def correlate_nm(input_list1, input_list2, assembly, mat_file):
     launcher.corr_nm(False, input_list1, input_list2, get_chrom_sizes(assembly), mat_file)
