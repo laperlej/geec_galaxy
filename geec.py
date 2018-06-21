@@ -101,10 +101,7 @@ def to_hdf5(params):
     filter_hdf5(name, args.assembly, user_hdf5, user_filtered_hdf5, include_path, exclude_path)
     print("hello2")
     if args.metric == "spearman":
-        print("hello3")
-        return
         rank_hdf5(user_filtered_hdf5)
-    return
 
 class Wig(object):
     def __init__(self, wigfile):
@@ -196,6 +193,7 @@ def wig_to_bigwig(wig_file, bigwig_file):
 
 
 def filter_hdf5(name, assembly, user_hdf5, filtered_hdf5, include, exclude):
+    return
     args = ["filter", "--include", include, "--exclude", exclude, user_hdf5, get_chrom_sizes(assembly), filtered_hdf5]
     epimain.main(args)
 
