@@ -27,7 +27,7 @@
     --assembly
     "${cond.assembly}"
     --metric
-    "{$metric}"
+    "${metric}"
   </command>
   <requirements>
     <requirement type="package" version="0.1.0">geec</requirement>
