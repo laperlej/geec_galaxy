@@ -85,7 +85,6 @@ def get_hdf5(md5, assembly, resolution, include, exclude, metric="pearson"):
 
 def to_hdf5(params):
     args, datatype, raw_file, name, user_hdf5, user_filtered_hdf5, include_path, exclude_path = params
-    print(user_hdf5)
     if datatype.lower() == "bigwig":
         bw_to_hdf5(raw_file, name, args.assembly, user_hdf5, args.bin)
     elif datatype.lower() == "bedgraph":
@@ -364,6 +363,7 @@ def main():
     else:
         input_list_path = create_input_list(input_list1 + input_list2)
         #correlate all uncorrelated matrix cells
+        print(open(input_list_path).read())
         correlate(input_list_path, args.assembly, mat_file_nn)
 
         #generate the final matrix
