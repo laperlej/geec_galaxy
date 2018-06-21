@@ -194,21 +194,27 @@ def filter_hdf5(name, assembly, user_hdf5, filtered_hdf5, include, exclude):
     args = ["filter", "--include", include, "--exclude", exclude, user_hdf5, get_chrom_sizes(assembly), filtered_hdf5]
     epimain.main(args)
 
-def correlate(input_list, assembly, mat_file):
-    args = ["correlate", input_list, get_chrom_sizes(assembly), mat_file]
-    epimain.main(args)
-
 def is_precalc(md5s, files, metric):
     # verify if nm
     return bool(md5s and metric == "pearson" and False)
 
+def correlate(input_list, assembly, mat_file):
+    args = ["correlate", input_list, get_chrom_sizes(assembly), mat_file]
+    epimain.main(args)
+
 def correlate_nm(input_list1, input_list2, assembly, mat_file):
     launcher.corr_nm(False, input_list1, input_list2, get_chrom_sizes(assembly), mat_file)
+
+def launch_make_matrix(nn_mat_file, output_matrix, meta_json = ""):
+    args = [nn_mat_file, output_matrix]
+    if meta_json:
+        args += ["-meta", meta_json]
+    make_matrix.main(args)
 
 def make_matrix_nm(nn_mat_file, nm_mat_file, precalc_matrix, output_matrix, meta_json = ""):
     args = ["-nm", nm_mat_file, "-mm", precalc_matrix, nn_mat_file, output_matrix]
     if meta_json:
-        args += ["--meta", meta_json]
+        args += ["-meta", meta_json]
     make_matrix.main(args)
 
 def slice_matrix(md5s, assembly, resolution, include, exclude, output):
@@ -222,12 +228,6 @@ def slice_matrix(md5s, assembly, resolution, include, exclude, output):
     print(arguments)
     with open(output, 'w') as output_file:
         subprocess.call(arguments, stdout=output_file)
-
-def launch_make_matrix(nn_mat_file, output_matrix, meta_json = ""):
-    args = [nn_mat_file, output_matrix]
-    if meta_json:
-        args += ["--meta", meta_json]
-    make_matrix.main(args)
 
 def rank_hdf5(hdf5_path):
   h5f = h5py.File(hdf5_path, 'r+')
