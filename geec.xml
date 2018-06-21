@@ -4,30 +4,30 @@
     geec.py
     --files
     #for i in $userData
-      "$i"
+      "${i}"
     #end for
     --types
     #for i in $userData
-      $i.extension
+      "${i.extension}"
     #end for
     --labels
     #for i in $userData
-      $i.name
+      "${i.name}"
     #end for
     --md5s
-    $ihecdata
+    "${ihecdata}"
     --include
-    $cond.cond_inc.include
+    "${cond.cond_inc.include}"
     --exclude
-    $cond.cond_inc.exclude
+    "${cond.cond_inc.exclude}"
     --bin
-    $cond.resolution
+    "${cond.resolution}"
     --output
-    $output
+    "${output}"
     --assembly
-    $cond.assembly
+    "${cond.assembly}"
     --metric
-    $metric
+    "{$metric}"
   </command>
   <requirements>
     <requirement type="package" version="0.1.0">geec</requirement>
