@@ -10,7 +10,6 @@ import h5py
 import scipy.stats
 import multiprocessing
 
-print(h5py.__file__)
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'epigeec/epigeec/python/core'))
 import main as epimain
 import launcher
