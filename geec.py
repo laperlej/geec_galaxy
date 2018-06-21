@@ -345,9 +345,9 @@ def main():
         p_args = []
         for raw_file, datatype, name, user_hdf5, user_filtered_hdf5 in user_input_list:
             p_args.append((args, datatype, raw_file, name, user_hdf5, user_filtered_hdf5, include_path, exclude_path))
+        p.map(to_hdf5, p_args)
         print("winner")
         exit()
-        p.map(to_hdf5, p_args)
 
     if is_precalc(md5s, args.files, args.metric):
         input_list_path1 = create_input_list(input_list1)
