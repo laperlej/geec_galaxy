@@ -27,7 +27,7 @@ WIG_TO_BW = os.path.join(os.path.dirname(os.path.realpath(__file__)), "bin", "wi
 MODULE_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), "geec_tools")
 
 def analysis_path(script_name):
-    return os.path.join(os.path.dirname(MODULE_DIR), 'geec_analysis', script_name)
+    return os.path.join(MODULE_DIR, 'geec_analysis', script_name)
 
 GEEC_ANNOTATE = analysis_path('geec_annotate.py')
 GEEC_ARI = analysis_path('geec_ari.py')
