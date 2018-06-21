@@ -375,6 +375,7 @@ def main():
         #correlate all uncorrelated matrix cells
         correlate(input_list_path, args.assembly, mat_file_nn)
         #generate the final matrix
+        print(mat_file_nn, args.output, args.md5s)
         launch_make_matrix(mat_file_nn, args.output, args.md5s)
     #matrix_content = open(mat_file_nn).read()
     #for oldname, newname in :
