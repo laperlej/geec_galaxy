@@ -377,7 +377,8 @@ def main():
         launch_make_matrix(mat_file_nn, args.output, args.md5s)
     matrix_content = open(args.output).read()
     for oldname, newname in input_list1:
-        matrix_content.replace(os.path.basename(oldname), newname)
+        print oldname, newname, os.path.basename(oldname)
+        matrix_content = matrix_content.replace(os.path.basename(oldname), newname)
     with open(args.output, 'w') as f:
         f.write(matrix_content)
 
