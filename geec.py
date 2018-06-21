@@ -10,10 +10,77 @@ import h5py
 import scipy.stats
 import multiprocessing
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'geec_tools/python/utils'))
-import config
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'epigeec/epigeec/python/core'))
+import main as epimain
+import launcher
+import make_matrix
 
-PUBLIC_DATA_ROOT = "/home/laperlej/geec/public"
+PUBLIC_DATA_ROOT = "/geec-data/public"
+
+import os.path
+
+#directories
+RESOURCE_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__), "epigeec", "epigeec", "resource"))
+WIG_TO_BW = os.path.join(os.path.dirname(os.path.realpath(__file__), "bin", "wigToBigWig"))
+
+def analysis_path(script_name):
+    return os.path.join(os.path.dirname(MODULE_DIR), 'geec_analysis', script_name)
+
+GEEC_ANNOTATE = analysis_path('geec_annotate.py')
+GEEC_ARI = analysis_path('geec_ari.py')
+GEEC_SLICE = analysis_path('geec_slice.py')
+GEEC_SLICE_FILE_NAME = analysis_path('geec_slice_file_name.py')
+
+#chrom sizes
+def chrom_sizes_path_maker(filename):
+    return os.path.join(RESOURCE_DIR,'chrom_sizes',filename)
+
+def get_chrom_sizes(assembly):
+    assembly = assembly.lower()
+    if assembly != 'saccer3':
+        assembly = assembly + '.noy'
+    else:
+        assembly = assembly + '.can'
+    filename = '{0}.chrom.sizes'.format(assembly)
+    return chrom_sizes_path_maker(filename)
+
+#regions
+def filter_path_maker(filename):
+    return os.path.join(RESOURCE_DIR, 'filter', filename)
+
+def get_filter(assembly, content):
+    if content == 'none':
+        return filter_path_maker('none.bed')
+    filename = "{0}.{1}.bed".format(assembly.lower(), content.lower())
+    return filter_path_maker(filename)
+
+#precalculated
+def hdf5_path_maker(path):
+    return os.path.join(PUBLIC_DATA_ROOT, path[0], path[1], path[2])
+
+def get_resolution(num):
+    to_human = {1:"1bp",
+                10:"10bp",
+                100: "100bp",
+                1000: "1kb",
+                10000: "10kb",
+                100000: "100kb",
+                1000000: "1mb",
+                10000000: "10mb",
+                100000000: "100mb"}
+    return to_human[int(num)]
+
+def get_matrix(assembly, resolution, include, exclude, metric="pearson"):
+    filename = "{0}_{1}_{2}_{3}.mat".format(get_resolution(resolution), include, exclude, metric)
+    path = [PUBLIC_DATA_ROOT, assembly, filename]
+    return os.path.join(*path)
+
+def get_hdf5(md5, assembly, resolution, include, exclude, metric="pearson"):
+    ext = {"pearson":"hdf5",
+           "spearman":"rank"}
+    folder = "{1}_{2}_{3}".format(get_resolution(resolution), include, exclude)
+    path = [assembly, folder, "{0}_{1}.{2}".format(md5, folder,ext[metric])]
+    return hdf5_path_maker(path)
 
 def to_hdf5(params):
     args, datatype, raw_file, name, user_hdf5, user_filtered_hdf5, include_path, exclude_path = params
@@ -29,7 +96,7 @@ def to_hdf5(params):
         print "Could not determine type for {0}".format(name)
         #continue
         return
-    filter_hdf5(name, args.assembly, user_hdf5, user_filtered_hdf5, args.bin, include_path, exclude_path)
+    filter_hdf5(name, args.assembly, user_hdf5, user_filtered_hdf5, include_path, exclude_path)
     if args.metric == "spearman":
         rank_hdf5(user_filtered_hdf5)
 
@@ -101,135 +168,68 @@ class Wig(object):
         self.reset_cursor()
 
 def bw_to_hdf5(raw_file, name, assembly, user_hdf5, resolution):
-    """Usage: to_hdf5 {dataset.bw}
-                      {name}
-                      {chrom_sizes}
-                      {output.hdf5}
-                      {bin_size}\n"""
-    arguments = [config.BW_TO_HDF5,
-                 raw_file,
-                 name,
-                 config.get_chrom_sizes(assembly),
-                 user_hdf5,
-                 resolution]
-    subprocess.call(arguments)
+    args = ["to_hdf5", "-bw", raw_file, get_chrom_sizes(assembly), resolution, user_hdf5]
+    epimain.main(args)
 
 def bg_to_hdf5(raw_file, name, assembly, user_hdf5, resolution):
-    """Usage: to_hdf5 {dataset.bw}
-                      {name}
-                      {chrom_sizes}
-                      {output.hdf5}
-                      {bin_size}\n"""
-    arguments = [config.BG_TO_HDF5,
-                 raw_file,
-                 name,
-                 config.get_chrom_sizes(assembly),
-                 user_hdf5,
-                 resolution]
-    subprocess.call(arguments)
+    args = ["to_hdf5", "-bg", raw_file, get_chrom_sizes(assembly), resolution, user_hdf5]
+    epimain.main(args)
 
 def wig_to_bigwig(wig_file, bigwig_file):
     # wigToBigWig in.wig chrom.sizes out.bw
     wig = Wig(wig_file)
     wig.read()
-    chromsizes_file = temp_name()
+    chromsizes_file = tmp_name()
     with open(chromsizes_file, "w") as chrom_size:
         chrom_size.write(str(wig))
-    arguments = [config.WIG_TO_BW,
+    arguments = [WIG_TO_BW,
                  wig_file,
                  chromsizes_file,
                  bigwig_file]
     subprocess.call(arguments)
 
 
-def filter_hdf5(name, assembly, user_hdf5, filtered_hdf5, resolution, include, exclude):
-    """Usage: filter    {input.hdf5}
-                        {name}
-                        {output.hdf5}
-                        {chrom_sizes}
-                        {bin_size}
-                        {include.bed}
-                        {exclude.bed}\n");"""
-    arguments = [config.FILTER,
-                 user_hdf5,
-                 name,
-                 filtered_hdf5,
-                 config.get_chrom_sizes(assembly),
-                 resolution,
-                 include,
-                 exclude]
-    subprocess.call(arguments)
+def filter_hdf5(name, assembly, user_hdf5, filtered_hdf5, include, exclude):
+    args = ["filter", "--include", include, "--exclude", exclude, user_hdf5, get_chrom_sizes(assembly), filtered_hdf5]
+    epimain.main(args)
 
-def correlate(input_list, assembly, correlation_file, resolution):
-    """Usage: correlation {input_list}
-                          {chrom_sizes}
-                          {output.results}
-                          {bin_size}\n");"""
-    arguments = [config.CORRELATION,
-                 input_list,
-                 config.get_chrom_sizes(assembly),
-                 correlation_file,
-                 resolution]
-    subprocess.call(arguments)
+def correlate(input_list, assembly, mat_file):
+    args = ["correlate", input_list, get_chrom_sizes(assembly), mat_file]
+    epimain.main(args)
 
 def is_nm(md5s, files, metric):
     # verify if nm
     return bool(md5s and metric == "pearson")
 
-def correlate_nm(input_list1, input_list2, assembly, correlation_file, resolution):
-    """Usage: correlation_nm {input_list1}
-                             {input_list2}
-                             {chrom_sizes}
-                             {output.results}
-                             {bin_size}\n");"""
-    subprocess.call([config.CORRELATION_NM,
-                     input_list1,
-                     input_list2,
-                     config.get_chrom_sizes(assembly),
-                     correlation_file,
-                     resolution
-                     ])
+def correlate_nm(input_list1, input_list2, assembly, mat_file):
+    launcher.corr_nm(False, input_list1, input_list2, get_chrom_sizes(assembly), mat_file)
 
-def make_matrix_nm(input_list1, input_list2, correlation_file, precalc_matrix, output_matrix, meta_json = ""):
-    """
-    python make_matrix.py {list_path} {chrom_size} {corr_path} {output_path}
-    """
-    arguments = ['python',
-                 config.MAKE_MATRIX_NM,
-                 input_list1,
-                 input_list2,
-                 correlation_file,
-                 precalc_matrix,
-                 output_matrix
-                 ]
+def make_matrix_nm(nn_mat_file, nm_mat_file, precalc_matrix, output_matrix, meta_json = ""):
+    args = ["-nm", nm_mat_file, "-mm", precalc_matrix, nn_mat_file, output_matrix, meta_json]
     if meta_json:
-        arguments += [meta_json]
-    subprocess.call(arguments)
+        args += [meta_json]
+    make_matrix.main(args)
 
 def slice_matrix(md5s, assembly, resolution, include, exclude, output):
     """
     python geec_slice_file_name.py matrix.mat fn_1 fn_2 fn_N > output.mat
     """
     arguments = ['python',
-                 config.GEEC_SLICE_FILE_NAME,
-                 config.get_matrix(assembly, resolution, include, exclude)]
+                 GEEC_SLICE_FILE_NAME,
+                 get_matrix(assembly, resolution, include, exclude)]
     arguments += md5s
 
     with open(output, 'w') as output_file:
         subprocess.call(arguments, stdout=output_file)
 
-def make_matrix(input_list, correlation_file, output_matrix, meta_json = ""):
+def launch_make_matrix(nn_mat_file, output_matrix, meta_json = ""):
     """
     python make_matrix.py {list_path} {chrom_size} {corr_path} {output_path}
     """
-    arguments = ['python', 
-                 config.MAKE_MATRIX,
-                 input_list,
-                 correlation_file,
-                 output_matrix]
+    args = [nn_mat_file, output_matrix]
     if meta_json:
-      arguments += [meta_json]
-    subprocess.call(arguments)
+        args += [meta_json]
+    make_matrix.main(args)
 
 def rank_hdf5(hdf5_path):
   h5f = h5py.File(hdf5_path, 'r+')
@@ -248,7 +248,8 @@ def create_input_list(input_list):
     file_path = tmp_name()
     with open(file_path, 'w') as input_file:
         for path, label in input_list:
-            input_file.write('{0}\t{1}\n'.format(path.strip(),label.strip()))
+            input_file.write('{0}\n'.format(path.strip()))
+            #input_file.write('{0}\t{1}\n'.format(path.strip(),label.strip()))
     return file_path
 
 def parse_md5s(md5_json):
@@ -316,8 +317,8 @@ def main():
     md5_json = listjson2dictjson(md5_json)
 
     #public data paths
-    include_path = config.get_region(args.assembly, args.include)
-    exclude_path = config.get_region(args.assembly, args.exclude)
+    include_path = get_filter(args.assembly, args.include)
+    exclude_path = get_filter(args.assembly, args.exclude)
     #create temporary input files for geec executables
     input_list1 = []
     input_list2 = []
@@ -331,13 +332,14 @@ def main():
         input_list1.append((user_filtered_hdf5, label))
 
     for md5 in md5s:
-        hdf5_path = config.get_hdf5(md5, args.assembly, args.bin, args.include, args.exclude, args.metric)
+        hdf5_path = get_hdf5(md5, args.assembly, args.bin, args.include, args.exclude, args.metric)
         if os.path.isfile(hdf5_path):
             input_list2.append((hdf5_path, md5))
         else:
             print "{0} is missing".format(md5_json["datasets"][md5].get("file_name", "unknown"))
 
-    correlation_file = tmp_name()
+    mat_file_nn = tmp_name()
+    mat_file_nm = tmp_name()
 
     # convert user bigwigs to hdf5 and filter it
     if user_input_list:
@@ -351,18 +353,19 @@ def main():
         input_list_path1 = create_input_list(input_list1)
         input_list_path2 = create_input_list(input_list2)
         #correlate all uncorrelated matrix cells
-        correlate_nm(input_list_path1, input_list_path2, args.assembly, correlation_file, args.bin)
+        correlate(input_list_path1, args.assembly, mat_file_nn)
+        correlate_nm(input_list_path1, input_list_path2, args.assembly, mat_file_nm)
 
         #generate the final matrix
-        precalc_matrix = config.get_matrix(args.assembly, args.bin, args.include, args.exclude)
-        make_matrix_nm(input_list_path1, input_list_path2, correlation_file, precalc_matrix, args.output, args.md5s)
+        precalc_matrix = get_matrix(args.assembly, args.bin, args.include, args.exclude)
+        make_matrix_nm(mat_file_nn, mat_file_nm, precalc_matrix, args.output, args.md5s)
     else:
         input_list_path = create_input_list(input_list1 + input_list2)
         #correlate all uncorrelated matrix cells
-        correlate(input_list_path, args.assembly, correlation_file, args.bin)
+        correlate(input_list_path, args.assembly, mat_file_nn)
 
         #generate the final matrix
-        make_matrix(input_list_path, correlation_file, args.output, args.md5s)
+        launch_make_matrix(mat_file_nn, args.output, args.md5s)
 
 if __name__ == '__main__':
     main()
