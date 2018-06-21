@@ -230,7 +230,7 @@ def slice_matrix(md5s, assembly, resolution, include, exclude, output):
     arguments = ['python',
                  GEEC_SLICE_FILE_NAME,
                  get_matrix(assembly, resolution, include, exclude)]
-    arguments += [md5.encode('ascii', 'ignore') for md5 in md5s]
+    arguments += md5s
     print(arguments)
     with open(output, 'w') as output_file:
         subprocess.call(arguments, stdout=output_file)
