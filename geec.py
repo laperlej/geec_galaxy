@@ -334,6 +334,7 @@ def main():
 
     for md5 in md5s:
         hdf5_path = get_hdf5(md5, args.assembly, args.bin, args.include, args.exclude, args.metric)
+        print(hdf5_path)
         if os.path.isfile(hdf5_path):
             input_list2.append((hdf5_path, md5))
         else:
