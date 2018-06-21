@@ -198,7 +198,7 @@ def correlate(input_list, assembly, mat_file):
     args = ["correlate", input_list, get_chrom_sizes(assembly), mat_file]
     epimain.main(args)
 
-def is_nm(md5s, files, metric):
+def is_precalc(md5s, files, metric):
     # verify if nm
     return bool(md5s and metric == "pearson")
 
@@ -350,7 +350,7 @@ def main():
             p_args.append((args, datatype, raw_file, name, user_hdf5, user_filtered_hdf5, include_path, exclude_path))
         p.map(to_hdf5, p_args)
 
-    if is_nm(md5s, args.files, args.metric):
+    if is_precalc(md5s, args.files, args.metric):
         print("a")
         input_list_path1 = create_input_list(input_list1)
         input_list_path2 = create_input_list(input_list2)
