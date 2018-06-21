@@ -84,8 +84,7 @@ def get_hdf5(md5, assembly, resolution, include, exclude, metric="pearson"):
     return hdf5_path_maker(path)
 
 def to_hdf5(params):
-    print("hello")
-    exit()
+    return
     args, datatype, raw_file, name, user_hdf5, user_filtered_hdf5, include_path, exclude_path = params
     if datatype.lower() == "bigwig":
         bw_to_hdf5(raw_file, name, args.assembly, user_hdf5, args.bin)
@@ -348,6 +347,8 @@ def main():
         for raw_file, datatype, name, user_hdf5, user_filtered_hdf5 in user_input_list:
             p_args.append((args, datatype, raw_file, name, user_hdf5, user_filtered_hdf5, include_path, exclude_path))
         p.map(to_hdf5, p_args)
+    print("done")
+    exit()
 
     if is_precalc(md5s, args.files, args.metric):
         input_list_path1 = create_input_list(input_list1)
