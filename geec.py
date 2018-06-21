@@ -101,6 +101,8 @@ def to_hdf5(params):
     filter_hdf5(name, args.assembly, user_hdf5, user_filtered_hdf5, include_path, exclude_path)
     print("hello2")
     if args.metric == "spearman":
+        print("hello3")
+        return
         rank_hdf5(user_filtered_hdf5)
     return
 
