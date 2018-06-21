@@ -200,7 +200,7 @@ def correlate(input_list, assembly, mat_file):
 
 def is_nm(md5s, files, metric):
     # verify if nm
-    return bool(md5s and metric == "pearson")
+    return bool(md5s and files and metric == "pearson")
 
 def correlate_nm(input_list1, input_list2, assembly, mat_file):
     launcher.corr_nm(False, input_list1, input_list2, get_chrom_sizes(assembly), mat_file)
@@ -349,11 +349,12 @@ def main():
         for raw_file, datatype, name, user_hdf5, user_filtered_hdf5 in user_input_list:
             p_args.append((args, datatype, raw_file, name, user_hdf5, user_filtered_hdf5, include_path, exclude_path))
         p.map(to_hdf5, p_args)
-    print("e")
+
     if is_nm(md5s, args.files, args.metric):
-        print("f")
         input_list_path1 = create_input_list(input_list1)
         input_list_path2 = create_input_list(input_list2)
+        print(input_list1)
+        print(input_list2)
         #correlate all uncorrelated matrix cells
         correlate(input_list_path1, args.assembly, mat_file_nn)
         correlate_nm(input_list_path1, input_list_path2, args.assembly, mat_file_nm)
@@ -364,7 +365,6 @@ def main():
     else:
         input_list_path = create_input_list(input_list1 + input_list2)
         #correlate all uncorrelated matrix cells
-        print("g")
         correlate(input_list_path, args.assembly, mat_file_nn)
 
         #generate the final matrix
