@@ -201,7 +201,7 @@ def filter_hdf5(name, assembly, user_hdf5, filtered_hdf5, include, exclude):
 
 def is_precalc(md5s, files, metric):
     # verify if nm
-    return bool(md5s and metric == "pearson" and False)
+    return bool(md5s and metric == "pearson")
 
 def correlate(input_list, assembly, mat_file):
     args = ["correlate", input_list, get_chrom_sizes(assembly), mat_file]
@@ -232,6 +232,7 @@ def slice_matrix(md5s, assembly, resolution, include, exclude, output):
     arguments += md5s
     print(arguments)
     with open(output, 'w') as output_file:
+        print(arguments)
         subprocess.call(arguments, stdout=output_file)
 
 def rank_hdf5(hdf5_path):
