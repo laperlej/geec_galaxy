@@ -309,7 +309,7 @@ def main():
     if args.labels == ['None']:
         args.labels = []
 
-    desc = "{0}_{1}_{2}_{3}_{4}".format(args.bin, args.assembly, args.include, args.exclude, args.metric)
+    desc = "{0}_{1}_{2}_{3}_{4}_{5}datasets".format(args.bin, args.assembly, args.include, args.exclude, args.metric, len(args.files))
 
     #read md5 list file for public data
     if args.md5s:
