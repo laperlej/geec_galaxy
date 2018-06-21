@@ -229,10 +229,12 @@ def slice_matrix(md5s, assembly, resolution, include, exclude, output):
     with open(output, 'w') as output_file:
         subprocess.call(arguments, stdout=output_file)
     """
+    """
     arguments = ["whatever", "-o", output,
                  get_matrix(assembly, resolution, include, exclude)]
     arguments += md5s
-    geec_slice_file_name.main(arguments)
+    """
+    geec_slice_file_name.geec_slice_file_name(get_matrix(assembly, resolution, include, exclude), md5s, output)
 
 def rank_hdf5(hdf5_path):
   h5f = h5py.File(hdf5_path, 'r+')
