@@ -276,9 +276,9 @@ def listjson2dictjson(old_json):
 
 def prepend(file, s):
     with open(file, 'r+') as f:
-        content = f.read()
+        content = s + f.read()
         f.seek(0, 0)
-        f.write(s)
+        f.write(content)
 
 def main():
     """
