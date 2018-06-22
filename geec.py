@@ -182,8 +182,8 @@ def wig_to_bigwig(wig_file, assembly, bigwig_file):
         chrom_size.write(str(wig))
     arguments = [WIG_TO_BW,
                  wig_file,
-                 get_chrom_sizes(assembly),
-                 #chromsizes_file,
+                 #get_chrom_sizes(assembly),
+                 chromsizes_file,
                  bigwig_file]
     print(arguments)
     subprocess.call(arguments)
