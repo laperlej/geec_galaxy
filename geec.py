@@ -178,6 +178,7 @@ def wig_to_bigwig(wig_file, bigwig_file):
     wig.read()
     chromsizes_file = tmp_name()
     with open(chromsizes_file, "w") as chrom_size:
+        print(str(wig))
         chrom_size.write(str(wig))
     arguments = [WIG_TO_BW,
                  wig_file,
