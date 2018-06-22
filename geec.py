@@ -86,7 +86,7 @@ def to_hdf5(params):
     elif datatype.lower() == "wig":
         tmp_file = tmp_name()
         wig_to_bigwig(raw_file, name, args.assembly, tmp_file)
-        if os.path.exist(tmp_file):
+        if os.path.exists(tmp_file):
             bw_to_hdf5(tmp_file, name, args.assembly, user_hdf5, args.bin)
         else:
             return
