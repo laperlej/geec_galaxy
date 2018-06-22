@@ -85,17 +85,15 @@ def to_hdf5(params):
         bg_to_hdf5(raw_file, name, args.assembly, user_hdf5, args.bin)
     elif datatype.lower() == "wig":
         tmp_file = tmp_name()
-        wig_to_bigwig(raw_file, args.assembly, tmp_file)
+        wig_to_bigwig(raw_file, name, args.assembly, tmp_file)
         bw_to_hdf5(tmp_file, name, args.assembly, user_hdf5, args.bin)
     else:
         print "Could not determine type for {0}".format(name)
         #continue
         return
-    print("hello")
     filter_hdf5(name, args.assembly, user_hdf5, user_filtered_hdf5, include_path, exclude_path)
     if args.metric == "spearman":
         rank_hdf5(user_filtered_hdf5)
-    print("bye")
 
 class Wig(object):
     def __init__(self, wigfile):
@@ -172,7 +170,7 @@ def bg_to_hdf5(raw_file, name, assembly, user_hdf5, resolution):
     args = ["to_hdf5", "-bg", raw_file, get_chrom_sizes(assembly), resolution, user_hdf5]
     epimain.main(args)
 
-def wig_to_bigwig(wig_file, assembly, bigwig_file):
+def wig_to_bigwig(wig_file, name, assembly, bigwig_file):
     # wigToBigWig in.wig chrom.sizes out.bw
     wig = Wig(wig_file)
     wig.read()
@@ -181,10 +179,12 @@ def wig_to_bigwig(wig_file, assembly, bigwig_file):
         chrom_size.write(str(wig))
     arguments = [WIG_TO_BW,
                  wig_file,
-                 #get_chrom_sizes(assembly),
                  chromsizes_file,
                  bigwig_file]
-    subprocess.call(arguments)
+    error = ""
+    subprocess.call(arguments, stderr=error)
+    if error:
+        print("Warning: {0}".format(error.replace(wig_file, name)))
 
 
 def filter_hdf5(name, assembly, user_hdf5, filtered_hdf5, include, exclude):
