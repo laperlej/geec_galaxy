@@ -187,7 +187,7 @@ def wig_to_bigwig(wig_file, name, assembly, bigwig_file):
     p = subprocess.Popen(arguments, stderr=subprocess.PIPE)
     out, err = p.communicate()
     if err:
-        raise ValueError("Warning: {0}".format(err.replace(wig_file, name)))
+        raise ValueError("{0}".format(err.replace(wig_file, name)))
 
 
 def filter_hdf5(name, assembly, user_hdf5, filtered_hdf5, include, exclude):
