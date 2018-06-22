@@ -85,7 +85,7 @@ def to_hdf5(params):
         bg_to_hdf5(raw_file, name, args.assembly, user_hdf5, args.bin)
     elif datatype.lower() == "wig":
         tmp_file = tmp_name()
-        wig_to_bigwig(raw_file, tmp_file)
+        wig_to_bigwig(raw_file, args.assembly, tmp_file)
         bw_to_hdf5(tmp_file, name, args.assembly, user_hdf5, args.bin)
     else:
         print "Could not determine type for {0}".format(name)
@@ -172,7 +172,7 @@ def bg_to_hdf5(raw_file, name, assembly, user_hdf5, resolution):
     args = ["to_hdf5", "-bg", raw_file, get_chrom_sizes(assembly), resolution, user_hdf5]
     epimain.main(args)
 
-def wig_to_bigwig(wig_file, bigwig_file):
+def wig_to_bigwig(wig_file, assembly, bigwig_file):
     # wigToBigWig in.wig chrom.sizes out.bw
     wig = Wig(wig_file)
     wig.read()
@@ -182,7 +182,8 @@ def wig_to_bigwig(wig_file, bigwig_file):
         chrom_size.write(str(wig))
     arguments = [WIG_TO_BW,
                  wig_file,
-                 chromsizes_file,
+                 get_chrom_sizes(assembly),
+                 #chromsizes_file,
                  bigwig_file]
     print(arguments)
     subprocess.call(arguments)
