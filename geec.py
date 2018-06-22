@@ -182,7 +182,7 @@ def wig_to_bigwig(wig_file, name, assembly, bigwig_file):
                  chromsizes_file,
                  bigwig_file]
     error = ""
-    p = subprocess.call(arguments, stderr=subprocess.PIPE)
+    p = subprocess.Popen(arguments, stderr=subprocess.PIPE)
     out, err = p.communicate()
     if err:
         print("Warning: {0}".format(err.replace(wig_file, name)))
