@@ -91,9 +91,11 @@ def to_hdf5(params):
         print "Could not determine type for {0}".format(name)
         #continue
         return
+    print("hello")
     filter_hdf5(name, args.assembly, user_hdf5, user_filtered_hdf5, include_path, exclude_path)
     if args.metric == "spearman":
         rank_hdf5(user_filtered_hdf5)
+    print("bye")
 
 class Wig(object):
     def __init__(self, wigfile):
@@ -181,6 +183,7 @@ def wig_to_bigwig(wig_file, bigwig_file):
                  wig_file,
                  chromsizes_file,
                  bigwig_file]
+    print(arguments)
     subprocess.call(arguments)
 
 
