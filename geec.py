@@ -181,7 +181,6 @@ def wig_to_bigwig(wig_file, name, assembly, bigwig_file):
                  wig_file,
                  chromsizes_file,
                  bigwig_file]
-    error = ""
     p = subprocess.Popen(arguments, stderr=subprocess.PIPE)
     out, err = p.communicate()
     if err:
