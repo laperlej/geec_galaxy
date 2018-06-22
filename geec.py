@@ -182,9 +182,10 @@ def wig_to_bigwig(wig_file, name, assembly, bigwig_file):
                  chromsizes_file,
                  bigwig_file]
     error = ""
-    subprocess.call(arguments, stderr=error)
-    if error:
-        print("Warning: {0}".format(error.replace(wig_file, name)))
+    p = subprocess.call(arguments, stderr=subprocess.PIPE)
+    out, err = p.communicate(
+    if err:
+        print("Warning: {0}".format(err.replace(wig_file, name)))
 
 
 def filter_hdf5(name, assembly, user_hdf5, filtered_hdf5, include, exclude):
