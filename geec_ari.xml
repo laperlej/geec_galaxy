@@ -12,7 +12,7 @@
       ${clusteringAlgoCond.linkage}
     #end if
     --title
-    GeEC-ari\ of\ $public_metadata.name
+    epiGeEC\ Evaluate\ Clustering\ of\ $public_metadata.name
     #if str($breakdowns) != "":
       -b
       $breakdowns
