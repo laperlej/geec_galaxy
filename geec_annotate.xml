@@ -38,7 +38,7 @@
     <param format="Json" name="public_metadata" type="data" label="Select public datasets metadata" optional="false" multiple="false" help="Select the file used by &quot;epiGeEC Correlation Matrix&quot; to create the matrix selected above. The metadata file in json format should be coming from the &quot;epiGeEC Public Dataset Selection&quot; selection tool."/>
 
     <conditional name="nb_clusters_cond">
-      <param name="nb_clusters_specified" checked="true" type="boolean" label="Specify the number of clusters" help="" />
+      <param name="nb_clusters_specified" checked="false" type="boolean" label="Specify the number of clusters" help="" />
       <when value="true">
         <param name="nb_clusters" type="integer" value="10" min="1" label="Number of clusters" help="Annotate the heatmap and the multidimensional scaling representation using the given number of clusters." />
       </when>
@@ -65,7 +65,7 @@
 
     <param name="doReorderedMatrix" type="boolean" value="false" label="Output a reordered version of the matrix" help="Write a ordered copy of the original matrix that match the order inside the tsv and the pdf files." />
 
-    <param name="categories_name" type="text" value="assay publishing_group cell_type" label="Label category restriction" help="Restrict the annotation to some categories of metadata label by typing the label category name as written in the metadata file, seperated by a blank (e.g. assay publishing_group cell_type)."/>
+    <param name="categories_name" type="text" value="assay cell_type publishing_group" label="Label category restriction" help="Restrict the annotation to some categories of metadata label by typing the label category name as written in the metadata file, seperated by a blank (e.g. assay publishing_group cell_type)."/>
 
     <conditional name="scatter_plot">
       <param name="do_scatter_plot" type="boolean" label="Generate a Multidimensional Scaling (MDS) representation" help="Note that the running time is greatly affected by the number of datasets (~40 minutes for 4000 datasets)."/>
