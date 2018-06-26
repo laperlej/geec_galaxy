@@ -91,7 +91,7 @@ def to_hdf5(params):
         else:
             return
     else:
-        print "Could not determine type for {0}".format(name)
+        print "The format of this file is not recognized as one of the supported format (bigWig, WIG, bedGraph): {0}".format(name)
         #continue
         return
     filter_hdf5(name, args.assembly, user_hdf5, user_filtered_hdf5, include_path, exclude_path)
