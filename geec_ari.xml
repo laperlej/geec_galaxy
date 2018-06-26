@@ -53,7 +53,7 @@
     <param name="breakdowns" type="text" value="assay publishing_group" label="Breakdown the annotation of some categories of metadata label." help="Type the category name as written in the metadata file, seperated by a blank (e.g. assay publishing_group)."/>
 
     <conditional name="ignore_user">
-        <param name="do_ignore_user" value="true" type="boolean" label="Ignore User File" help="This my help" />
+        <param name="do_ignore_user" type="boolean" label="Ignore User File" help="This my help" />
     </conditional>
 
   </inputs>
