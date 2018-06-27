@@ -5,7 +5,7 @@
     #if $ignore_user.do_ignore_user:
       -i
     #end if
-    "${matrix}""
+    "${matrix}"
     "${public_metadata}"
     #if str( $clusteringAlgoCond.algo ) == "hierarchical":
       --linkage
