@@ -5,23 +5,23 @@
     #if $ignore_user.do_ignore_user:
       -i
     #end if
-    $matrix
-    $public_metadata
+    "${matrix}""
+    "${public_metadata}"
     #if str( $clusteringAlgoCond.algo ) == "hierarchical":
       --linkage
-      ${clusteringAlgoCond.linkage}
+      "${clusteringAlgoCond.linkage}"
     #end if
     --title
-    epiGeEC\ Evaluate\ Clustering\ of\ $public_metadata.name
+    epiGeEC\ Evaluate\ Clustering\ of\ ${public_metadata.name}
     #if str($breakdowns) != "":
       -b
-      $breakdowns
+      ${breakdowns}
     #end if
     #if str($restrictions) != "":
       -r
-      $restrictions
+      ${restrictions}
     #end if
-    > $output
+    > ${output}
   </command>
   <requirements>
     <requirement type="package" version="0.1.0">geec</requirement>

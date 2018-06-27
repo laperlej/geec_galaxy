@@ -4,18 +4,18 @@
     geec_annotate.py
     #if $nb_clusters_cond.nb_clusters_specified:
       -k
-      $nb_clusters_cond.nb_clusters
+      ${nb_clusters_cond.nb_clusters}
     #end if
     --pdf 
-    $pdf
+    "${pdf}"
     --tsv
-    $tsv
+    "${tsv}"
     #if $doReorderedMatrix:
       --rmat
-      $rmat
+      "${rmat}"
     #end if
     --title
-    epiGeEC\ Annotate\ Matrix\ of\ $public_metadata.name,\ k=%\(nb_clusters\)\ clusters
+    epiGeEC\ Annotate\ Matrix\ of\ ${public_metadata.name},\ k=%\(nb_clusters\)\ clusters
     #if $scatter_plot.do_scatter_plot and $scatter_plot.seed:
       --seed ${scatter_plot.seed}
     #end if
@@ -23,11 +23,11 @@
       --mds
     #end if
     #if str($clusteringAlgoCond.algo) == 'hierarchical':
-      --linkage ${clusteringAlgoCond.linkage}
+      --linkage "${clusteringAlgoCond.linkage}"
     #end if
-    $matrix
-    $public_metadata
-    $categories_name
+    "${matrix}"
+    "${public_metadata}"
+    ${categories_name}
   </command>
   <requirements>
     <requirement type="package" version="0.1.0">geec</requirement>
