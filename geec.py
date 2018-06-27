@@ -1,4 +1,6 @@
 import sys
+sys.tracebacklimit = 0
+
 import argparse
 import subprocess
 import tempfile
