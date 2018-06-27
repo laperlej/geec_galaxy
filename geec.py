@@ -331,7 +331,7 @@ def main():
       md5_json = {}
       md5s = []
 
-    desc = "assembly={1}, bin={0}, nbUserDatasets={5}, nbPublicDatasets={6}, include={2}, exclude={3}, metric={4}".format(args.bin, args.assembly, args.include, args.exclude, args.metric, len(args.files), md5_json["count"])
+    desc = "assembly={1}, bin={0}, nbUserDatasets={5}, nbPublicDatasets={6}, include={2}, exclude={3}, metric={4}".format(args.bin, args.assembly, args.include, args.exclude, args.metric, len(args.files), md5_json.get("count", 0))
 
     md5_json = listjson2dictjson(md5_json)
 
