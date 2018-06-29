@@ -39,10 +39,10 @@
 
     <conditional name="nb_clusters_cond">
       <param name="not_nb_clusters_specified" checked="false" type="boolean" label="Automatically specify the number of clusters" help="" />
-      <when value="true">
+      <when value="false">
         <param name="nb_clusters" type="integer" value="10" min="1" label="Number of clusters" help="Annotate the heatmap and the multidimensional scaling representation using the given number of clusters." />
       </when>
-      <when value="false">
+      <when value="true">
         <param name="nb_clusters" type="select" label="Number of clusters" help="Detect the best number of clusters using the Silhouette algorithm to annotate the heatmap and the multidimensional scaling representation." >
           <option value="Auto" />
         </param>
