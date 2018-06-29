@@ -48,12 +48,12 @@
       </when>
     </conditional>
 
-    <param name="restrictions" type="text" value="assay publishing_group cell_type" label="Category restriction" help="Restrict the annotation to some categories of metadata label by typing the category name as written in the metadata file, seperated by a blank (e.g. assay publishing_group cell_type)."/>
+    <param name="restrictions" type="text" value="assay cell_type publishing_group" label="Category restriction" help="Restrict the annotation to some categories of metadata label by typing the category name as written in the metadata file, seperated by a blank (e.g. assay cell_type publishing_group)."/>
 
     <param name="breakdowns" type="text" value="assay publishing_group" label="Breakdown the annotation of some categories of metadata label." help="Type the category name as written in the metadata file, seperated by a blank (e.g. assay publishing_group)."/>
 
     <conditional name="ignore_user">
-        <param name="do_ignore_user" type="boolean" label="Ignore User File" help="This my help" />
+        <param name="do_ignore_user" checked="true" type="boolean" label="Ignore user datasets" help="Since user metadata are by definition not included in the json file, if they tend to cluster with public datasets it is preferable to ignore them to get more precise ARI results (otherwise a “user” label  is added in each category, therefore artificially increasing the number of expected clusters)" />
     </conditional>
 
   </inputs>
