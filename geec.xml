@@ -56,6 +56,7 @@
         <conditional name="cond_inc">
           <param name="include" type="select" label="Selection regions" help="The comparison will only involve bins overlapping these regions">
             <option value="all" selected="true">Whole genome</option>
+            <option value="epic">Epic</option>
             <option value="gene">Genes</option>
             <option value="tss">TSS</option>
           </param>
@@ -64,6 +65,12 @@
             <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
               <option value="blklst" selected="true">Blacklisted</option>
               <option value="none">None</option>
+            </param>
+          </when>
+
+          <when value="epic">
+            <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
+              <option value="blklst" selected="true">Blacklisted</option>
             </param>
           </when>
 
