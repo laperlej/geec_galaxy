@@ -13,3 +13,7 @@ simlink to env.sh in folder <tool_dependency_dir>/geec/0.1.0/
 simlink to geec_galaxy in folder galaxy-dist/tools/
 
 add geec_galaxy/geec.xml, geec_galaxy/geec_datasource.xml in tool_conf.xml
+
+### Docker
+
+docker run -v /home/user/galaxy_storage/:/export/ -p 8000:80 -p 8021:21 -p 8022:22 --rm -it geec_galaxy
