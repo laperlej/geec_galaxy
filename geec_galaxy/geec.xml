@@ -1,0 +1,190 @@
+<tool id="geec" name="epiGeEC Correlation Matrix">
+  <description></description>
+  <command interpreter="python">
+    geec.py
+    --files
+    #for i in $userData
+      "${i}"
+    #end for
+    --types
+    #for i in $userData
+      "${i.extension}"
+    #end for
+    --labels
+    #for i in $userData
+      "${i.name}"
+    #end for
+    --md5s
+    "${ihecdata}"
+    --include
+    "${cond.cond_inc.include}"
+    --exclude
+    "${cond.cond_inc.exclude}"
+    --bin
+    "${cond.resolution}"
+    --output
+    "${output}"
+    --assembly
+    "${cond.assembly}"
+    --metric
+    "${metric}"
+  </command>
+  <requirements>
+    <requirement type="package" version="0.1.0">geec</requirement>
+  </requirements>
+  <inputs>
+    <param format="bigwig,bedgraph,wig" name="userData" type="data" label="User's dataset(s)" optional="true" multiple="true" help="Formats currently supported: bigWig, wig, bedGraph"/>
+    
+    <param format="json" name="ihecdata" type="data" label="Selected public datasets metadata" optional="true" multiple="false" help='A file imported from the "epiGeEC Public Dataset Selection" selection tool and containing public dataset metadata in json format'/>
+
+    <conditional name="cond">
+      <param name="assembly" type="select" label="Assembly" help="Select the assembly matching your input data">
+        <option value="hg19" selected="true">hg19</option>
+        <option value="hg38">hg38</option>
+        <option value="mm10">mm10</option>
+        <option value="saccer3">sacCer3</option>
+      </param>
+
+      <when value="hg19">
+        <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying next parameters">
+          <option value="1000" selected="true">1kb</option>
+          <option value="10000">10kb</option>
+          <option value="100000">100kb</option>
+          <option value="1000000">1mb</option>
+        </param>
+
+        <conditional name="cond_inc">
+          <param name="include" type="select" label="Selection regions" help="The comparison will only involve bins overlapping these regions">
+            <option value="all" selected="true">Whole genome</option>
+            <option value="epic">Epic</option>
+            <option value="gene">Genes</option>
+            <option value="tss">TSS</option>
+          </param>
+
+          <when value="all">
+            <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
+              <option value="blklst" selected="true">Blacklisted</option>
+              <option value="none">None</option>
+            </param>
+          </when>
+
+          <when value="epic">
+            <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
+              <option value="blklst" selected="true">Blacklisted</option>
+            </param>
+          </when>
+
+          <when value="gene">
+            <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
+              <option value="blklst" selected="true">Blacklisted</option>
+            </param>
+          </when>
+
+          <when value="tss">
+            <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
+              <option value="blklst" selected="true">Blacklisted</option>
+            </param>
+          </when>
+        </conditional>
+      </when>
+
+      <when value="hg38">
+        <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying next parameters">
+          <option value="1000" selected="true">1kb</option>
+          <option value="10000">10kb</option>
+          <option value="100000">100kb</option>
+          <option value="1000000">1mb</option>
+        </param>
+
+        <conditional name="cond_inc">
+          <param name="include" type="select" label="Selection regions" help="The comparison will only involve bins overlapping these regions">
+            <option value="all" selected="true">Whole genome</option>
+            <option value="gene">Genes</option>
+            <option value="tss">TSS</option>
+          </param>
+
+          <when value="all">
+            <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
+              <option value="none" selected="true">None</option>
+            </param>
+          </when>
+
+          <when value="gene">
+            <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
+              <option value="none" selected="true">None</option>
+            </param>
+          </when>
+
+          <when value="tss">
+            <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
+              <option value="none" selected="true">None</option>
+            </param>
+          </when>
+        </conditional>
+      </when>
+
+      <when value="mm10">
+        <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying next parameters">
+          <option value="1000" selected="true">1kb</option>
+          <option value="10000">10kb</option>
+          <option value="100000">100kb</option>
+          <option value="1000000">1mb</option>
+        </param>
+
+        <conditional name="cond_inc">
+          <param name="include" type="select" label="Selection regions" help="The comparison will only involve bins overlapping these regions">
+            <option value="all" selected="true">Whole genome</option>
+          </param>
+
+          <when value="all">
+            <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
+              <option value="blklst" selected="true">Blacklisted</option>
+              <option value="none">None</option>
+            </param>
+          </when>
+        </conditional>
+      </when>
+
+      <when value="saccer3">
+        <param name="resolution" type="select" label="Resolution of the comparison" help="Datasets are binned at this resolution before applying next parameters">
+          <option value="100">100bp</option>
+          <option value="1000" selected="true">1kb</option>
+          <option value="10000">10kb</option>
+        </param>
+
+        <conditional name="cond_inc">
+          <param name="include" type="select" label="Selection regions" help="The comparison will only involve bins overlapping these regions">
+            <option value="all" selected="true">Whole genome</option>
+          </param>
+
+          <when value="all">
+            <param name="exclude" type="select" label="Exclusion regions" help="The comparison will exclude bins overlapping these regions">
+              <option value="none" selected="true">None</option>
+            </param>
+          </when>
+        </conditional>
+      </when>
+
+    </conditional>
+
+    <param name="metric" type="select" label="Correlation metric">
+      <option value="pearson" selected="true">Pearson</option>
+      <option value="spearman">Spearman</option>
+    </param>
+
+  </inputs>
+  <outputs>
+    <data format="tabular" name="output" />
+  </outputs>
+
+<help>
+**What it does**
+
+epiGeEC Correlation Matrix computes a correlation matrix between many datasets at the given resolution. Thousands of pre-computed datasets are available from the epiGeEC Public Dataset Selection tool by importing to the Galaxy history a json file containing the metadata of the selected public datasets. The large public datasets are therefore not transferred to the user’s history.
+
+A user can also select signal datasets (BigWig, WIG, BedGraph) from his history, which will then be processed based on the selected options, then compared to the public datasets. It is actually possible to run epiGeEC Correlation Matrix strictly on private datasets (without public datasets). The assembly option is used to select the appropriate chromSizes file to generate intermediate HDF5 files. The output of epiGeEC Correlation Matrix is a tsv file containing the correlation matrix calculated on the canonical chromosomes.
+
+It is recommended to next use epiGeEC Annotate Matrix to create an annotated heatmap with its dendrogram and corresponding pie charts based on the provided metadata, as well as a multidimensional scaling representation of the matrix.
+</help>
+
+</tool>

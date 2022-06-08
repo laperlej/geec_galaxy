@@ -1,0 +1,93 @@
+<tool id="geec_annotate" name="epiGeEC Annotate Matrix">
+  <description></description>
+  <command interpreter="python">
+    geec_annotate.py
+    #if not $nb_clusters_cond.not_nb_clusters_specified:
+      -k
+      ${nb_clusters_cond.nb_clusters}
+    #end if
+    --pdf 
+    "${pdf}"
+    --tsv
+    "${tsv}"
+    #if $doReorderedMatrix:
+      --rmat
+      "${rmat}"
+    #end if
+    --title
+    epiGeEC\ Annotate\ Matrix\ of\ ${public_metadata.name},\ k=%\(nb_clusters\)\ clusters
+    #if $scatter_plot.do_scatter_plot and $scatter_plot.seed:
+      --seed ${scatter_plot.seed}
+    #end if
+    #if $scatter_plot.do_scatter_plot:
+      --mds
+    #end if
+    #if str($clusteringAlgoCond.algo) == 'hierarchical':
+      --linkage "${clusteringAlgoCond.linkage}"
+    #end if
+    "${matrix}"
+    "${public_metadata}"
+    ${categories_name}
+  </command>
+  <requirements>
+    <requirement type="package" version="0.1.0">geec</requirement>
+  </requirements>
+  <inputs>
+    <param format="tabular" name="matrix" type="data" label="Matrix file" optional="false" multiple="false" help="Select a matrix coming from &quot;epiGeEC Correlation Matrix&quot;."/>
+
+    <param format="Json" name="public_metadata" type="data" label="Select public datasets metadata" optional="false" multiple="false" help="Select the file used by &quot;epiGeEC Correlation Matrix&quot; to create the matrix selected above. The metadata file in json format should be coming from the &quot;epiGeEC Public Dataset Selection&quot; selection tool."/>
+
+    <conditional name="nb_clusters_cond">
+      <param name="not_nb_clusters_specified" checked="false" type="boolean" label="Automatically specify the number of clusters" help="" />
+      <when value="true">
+        <param name="nb_clusters" type="select" label="Number of clusters" help="Detect the best number of clusters using the Silhouette algorithm to annotate the heatmap and the multidimensional scaling representation." >
+          <option value="Auto" />
+        </param>
+      </when>
+      <when value="false">
+        <param name="nb_clusters" type="integer" value="10" min="1" label="Number of clusters" help="Annotate the heatmap and the multidimensional scaling representation using the given number of clusters." />
+      </when>
+    </conditional>
+
+    <conditional name="clusteringAlgoCond">
+      <param name="algo" type="select" label="Clustering Algorithm" help="Select which algorithm to use for the clustering.">
+        <option value="hierarchical">Hierarchical</option>
+      </param>
+      <when value="hierarchical">
+        <param name="linkage" type="select" label="Linkage Method" help="Select which linkage method to use for the hierarchical clustering.">
+          <option value="average">Average</option>
+          <option value="complete">Complete</option>
+          <option value="weighted">Weighted</option>
+          <option value="single">Single</option>
+        </param>
+      </when>
+    </conditional>
+
+    <param name="doReorderedMatrix" type="boolean" value="false" label="Output a reordered version of the matrix" help="Write a ordered copy of the original matrix that match the order inside the tsv and the pdf files." />
+
+    <param name="categories_name" type="text" value="assay cell_type publishing_group" label="Label category restriction" help="Restrict the annotation to some categories of metadata label by typing the label category name as written in the metadata file, seperated by a blank (e.g. assay cell_type publishing_group)."/>
+
+    <conditional name="scatter_plot">
+      <param name="do_scatter_plot" type="boolean" label="Generate a Multidimensional Scaling (MDS) representation" help="Note that the running time is greatly affected by the number of datasets (~40 minutes for 4000 datasets)."/>
+      <when value="true">
+        <param name="seed" type="integer" min="0" max="4294967295" label="Multidimensional Scaling (MDS) seed (optional)" optional="true"/>
+      </when>
+    </conditional>
+
+  </inputs>
+  <outputs>
+    <data format="pdf" name="pdf" label="epiGeEC Annotate k=$nb_clusters_cond.nb_clusters PDF on ${on_string}"/>
+    <data format="tabular" name="tsv" label="epiGeEC Annotate k=$nb_clusters_cond.nb_clusters TSV on ${on_string}"/>
+    <data format="tabular" name="rmat" label="epiGeEC reordered Matrix on ${on_string}">
+      <filter>doReorderedMatrix</filter>
+    </data>
+  </outputs>
+  <help>
+**What it does**
+
+epiGeEC Annotate takes as input the matrix from epiGeEC Correlation Matrix and the metadata used to generate the matrix, to create a heatmap representation with its dendrogram as well as a multidimensional scaling representation. It is also performing a hierarchical clustering of the datasets (using “1-r” as the distance measure (r being the Pearson coefficient correlation present in the matrix)), then cut the dendrogram to generate k clusters that are annotated as pie charts with the provided metadata. All the datasets of the matrix absent from the metadata json file are considered as private datasets and therefore identified “user” in the annotations.
+
+The output of epiGeEC Annotate Matrix is a pdf file containing all the graphical representations of the correlation matrix as well as a tsv containing the metadata of each clustered datasets, and optionally a reordered version of the correlation matrix.
+  </help>
+
+</tool>

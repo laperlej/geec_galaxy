@@ -1,0 +1,71 @@
+<tool id="geec_ari" name="epiGeEC Evaluate Clustering">
+  <description></description>
+  <command interpreter="python">
+    geec_ari.py
+    #if $ignore_user.do_ignore_user:
+      -i
+    #end if
+    "${matrix}"
+    "${public_metadata}"
+    #if str( $clusteringAlgoCond.algo ) == "hierarchical":
+      --linkage
+      "${clusteringAlgoCond.linkage}"
+    #end if
+    --title
+    epiGeEC\ Evaluate\ Clustering\ of\ ${public_metadata.name}
+    #if str($breakdowns) != "":
+      -b
+      ${breakdowns}
+    #end if
+    #if str($restrictions) != "":
+      -r
+      ${restrictions}
+    #end if
+    > ${output}
+  </command>
+  <requirements>
+    <requirement type="package" version="0.1.0">geec</requirement>
+  </requirements>
+  <inputs>
+    <param format="tabular" name="matrix" type="data" label="Matrix file" optional="false" multiple="false" help="Select a matrix coming from &quot;epiGeEC Correlation Matrix&quot;."/>
+
+    <param format="Json" name="public_metadata" type="data" label="Public metadata file" optional="false" multiple="false" help="Select a JSON file containing public dataset IDs and their metadata, coming from the &quot;epiGeEC Public Dataset Selection&quot; selection tool."/>
+
+    <!-- <param format="Json" name="private_metadata" type="data" label="Private metadata file (optional)" optional="true" multiple="false" help="Select a JSON file containing user dataset names and their metadata."/> -->
+
+    <conditional name="clusteringAlgoCond">
+      <param name="algo" type="select" label="Clustering Algorithm" help="Select which algorithm to use for the clustering.">
+        <option value="hierarchical">Hierarchical</option>
+        <!-- <option value="spectral">Spectral</option> -->
+      </param>
+      <when value="hierarchical">
+        <param name="linkage" type="select" label="Linkage Method" help="Select which linkage method to use for the hierarchical clustering.">
+          <option value="average">Average</option>
+          <option value="complete">Complete</option>
+          <option value="weighted">Weighted</option>
+          <option value="single">Single</option>
+        </param>
+      </when>
+    </conditional>
+
+    <param name="restrictions" type="text" value="assay cell_type publishing_group" label="Category restriction" help="Restrict the annotation to some categories of metadata label by typing the category name as written in the metadata file, seperated by a blank (e.g. assay cell_type publishing_group)."/>
+
+    <param name="breakdowns" type="text" value="assay publishing_group" label="Breakdown the annotation of some categories of metadata label." help="Type the category name as written in the metadata file, seperated by a blank (e.g. assay publishing_group)."/>
+
+    <conditional name="ignore_user">
+        <param name="do_ignore_user" checked="true" type="boolean" label="Ignore user datasets" help="Since user metadata are by definition not included in the json file, if they tend to cluster with public datasets it is preferable to ignore them to get more precise ARI results (otherwise a “user” label  is added in each category, therefore artificially increasing the number of expected clusters)" />
+    </conditional>
+
+  </inputs>
+  <outputs>
+    <data format="tabular" name="output" />
+  </outputs>
+  <help>
+**What it does**
+
+epiGeEC Evaluate Clustering takes as input approximately the same parameters as epiGeEC Annotate Matrix to calculate the Adjusted Rand Index (ARI, values between ~0 and 1) providing a quantitative evaluation of the clustering performed by epiGeEC Annotate Matrix (in other words how well the clustering corresponds to the expected structure based on the metadata). It is particularly useful to compare different sets of paramaters.
+
+The output of epiGeEC Evaluate Clustering is a tsv containing two tables. The first contains the ARI values for each selected label category as column, and optionally a breakdown of some label categories (e.g. the breakdown of the « assay » label category will calculate ARI values individually for RNA-seq, H3K4me3, …). The second table contains the number of different labels for each category.
+  </help>
+
+</tool>
